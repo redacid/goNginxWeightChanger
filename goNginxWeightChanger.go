@@ -6,7 +6,8 @@ import (
 	//"regexp"
 	//"os"
 	//"bufio"
-	//"./functions"
+	"./myfu"
+
 )
 
 var command string
@@ -42,10 +43,11 @@ func main() {
 	default:
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
 	case command == "round":
-		//fmt.Printf("%d", round(floatForRound))
+		fmt.Printf("%d", myfu.Round(floatForRound))
 	case command == "grep":
 		//fmt.Printf("%d", round(floatForRound))
-		//grep(strForGrep, fileForGrep)
+		myfu.Grep(strForGrep, fileForGrep)
+
 
 	}
 }
