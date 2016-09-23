@@ -1,12 +1,12 @@
-package goNginxWeightChanger
+package main
 
 import (
 	"fmt"
 	"flag"
-	"regexp"
-	"os"
-	"bufio"
-	"./functions"
+	//"regexp"
+	//"os"
+	//"bufio"
+	//"./functions"
 )
 
 var command string
@@ -42,10 +42,10 @@ func main() {
 	default:
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
 	case command == "round":
-		fmt.Printf("%d", round(floatForRound))
+		//fmt.Printf("%d", round(floatForRound))
 	case command == "grep":
 		//fmt.Printf("%d", round(floatForRound))
-		grep(strForGrep, fileForGrep)
+		//grep(strForGrep, fileForGrep)
 
 	}
 }
