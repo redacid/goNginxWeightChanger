@@ -46,7 +46,7 @@ func main() {
 		fmt.Printf("%d", myfu.Round(floatForRound))
 	case command == "grep":
 		//fmt.Printf("%d", round(floatForRound))
-		myfu.Grep(strForGrep, fileForGrep)
+		myfu.Grep2(strForGrep, fileForGrep)
 
 
 	}

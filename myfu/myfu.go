@@ -1,7 +1,6 @@
 package myfu
 
 import (
-	//"fmt"
 	"regexp"
 	"os"
 	"bufio"
@@ -43,6 +42,35 @@ func Grep(re, filename string) string {
 		if regex.MatchString(s) {
 			//fmt.Printf("%s\n", string(buf))
 			return s
+		}
+	}
+}
+
+func Grep2(re, filename string) {
+	regex, err := regexp.Compile(re)
+	if err != nil {
+		return //"there was a problem with the regular expression"
+	}
+
+	fh, err := os.Open(filename)
+	f := bufio.NewReader(fh)
+
+	if err != nil {
+		return //"there was a problem opening the file"
+	}
+	defer fh.Close()
+
+	buf := make([]byte, 1024)
+	for {
+		buf, _, err = f.ReadLine()
+		if err != nil {
+			return //"error"
+		}
+
+		s := string(buf)
+		if regex.MatchString(s) {
+			fmt.Printf("%s\n", string(buf))
+			//return s
 		}
 	}
 }
