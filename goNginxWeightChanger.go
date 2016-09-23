@@ -12,6 +12,7 @@ import (
 
 var command string
 var strForGrep string
+var strForRepl string
 var fileForGrep string
 var floatForRound float64
 
@@ -20,12 +21,12 @@ var floatForRound float64
 //var ip = flag.Int("flagname", 1234, "help message for flagname")
 
 func init() {
-	flag.StringVar(&command, "c", command, "Комманда(round,grep ...)")
+	flag.StringVar(&command, "c", command, "Комманда(round,grep,replace ...)")
 	flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
+	flag.StringVar (&strForRepl, "replace", strForRepl, "Строка для замены по grep фильтру")
 	flag.StringVar (&fileForGrep, "grepfile", strForGrep, "Файл для grep фильтра")
 }
-
 
 
 //func main() {
@@ -46,7 +47,10 @@ func main() {
 		fmt.Printf("%d", myfu.Round(floatForRound))
 	case command == "grep":
 		//fmt.Printf("%d", round(floatForRound))
+		// ./goNginxWeightChanger -c grep -grep="(server)(\s+)(back4)(\s+)(weight)(=)(\d+)(\s+)(max_fails)(=)(\d+)(\s+)(fail_timeout)(=)(5)(;)" -grepfile="nginx.conf"
 		myfu.Grep2(strForGrep, fileForGrep)
+	case command == "replace":
+		myfu.Replace(strForGrep,strForRepl,fileForGrep)
 
 
 	}
