@@ -15,10 +15,11 @@ import (
 	//"./github.com/alouca/gosnmp"
 	//"sync"
 	"bytes"
-	"./github.com/evanphx/ssh"
+	"./github.com/redacid/crypto/ssh"
 	"io/ioutil"
-	"io"
+	//"io"
 	//"time"
+	"time"
 )
 
 type Config struct {
@@ -59,55 +60,8 @@ var floatForRound float64
 //var floatForRound = flag.Float64("floatForRound",1.5, "Округлить до целого")
 //var ip = flag.Int("flagname", 1234, "help message for flagname")
 
-type SignerContainer struct {
-	signers []ssh.Signer
-}
-
-func (t *SignerContainer) Key(i int) (key ssh.PublicKey, err error) {
-	if i >= len(t.signers) {
-		return
-	}
-	key = t.signers[i].PublicKey()
-	return
-}
-
-func (t *SignerContainer) Sign(i int, rand io.Reader, data []byte) (sig []byte, err error) {
-	if i >= len(t.signers) {
-		return
-	}
-	sig, err = t.signers[i].Sign(rand, data)
-	return
-}
-
-func makeSigner(keyname string) (signer ssh.Signer, err error) {
-	fp, err := os.Open(keyname)
-	if err != nil {
-		return
-	}
-	defer fp.Close()
-
-	buf, _ := ioutil.ReadAll(fp)
-	signer, _ = ssh.ParsePrivateKey(buf)
-	return
-}
-
-func makeKeyring() ssh.ClientAuth {
-	signers := []ssh.Signer{}
-	keys := []string{os.Getenv("HOME") + "/.ssh/id_rsa", os.Getenv("HOME") + "/.ssh/authorized_keys"}
-	fmt.Printf("%s | %s",string[0],string[1])
-
-	for _, keyname := range keys {
-		signer, err := makeSigner(keyname)
-		if err == nil {
-			signers = append(signers, signer)
-		}
-	}
-
-	return ssh.ClientAuthKeyring(&SignerContainer{signers})
-}
-
 func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
-	conn, _ := ssh.Dial("tcp", hostname+":22", config)
+	conn, _ := ssh.Dial("tcp", hostname + ":22", config)
 	session, _ := conn.NewSession()
 	defer session.Close()
 
@@ -153,17 +107,32 @@ func main() {
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
 
+
 			cmd := "/usr/bin/whoami"
 			host := FServer.Name
+	//		results := make(chan string, 10)
+	//		timeout := time.After(5 * time.Second)
 
-			//results := make(chan string, 10)
-			//timeout := time.After(5 * time.Second)
+			pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
+			if err != nil {
+				log.Fatalf("unable to read private key: %v", err)
+			}
+
+			// Create the Signer for this private key.
+			signer, err := ssh.ParsePrivateKey(pkey)
+			if err != nil {
+				log.Fatalf("unable to parse private key: %v", err)
+			}
+
 			config := &ssh.ClientConfig{
 				User: os.Getenv("LOGNAME"),
-				Auth: []ssh.ClientAuth{makeKeyring()},
+				Auth: []ssh.AuthMethod{
+					// Use the PublicKeys method for remote authentication.
+					ssh.PublicKeys(signer),
+				},
 			}
-			fmt.Printf("%s",executeCmd(cmd, host, config))
 
+			executeCmd(cmd, host, config)
 
 		}
 		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
