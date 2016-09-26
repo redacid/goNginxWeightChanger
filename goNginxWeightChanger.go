@@ -80,7 +80,7 @@ func main() {
 		for _, BServer := range config.BackendServers {
 
 			fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
-			s, err := gosnmp.NewGoSNMP(BServer.IP, "public", gosnmp.Version2c, 5)
+			s, err := gosnmp.NewGoSNMP("144.76.225.213", "public", gosnmp.Version2c, 5)
 			if err != nil {
 				log.Fatal(err)
 			}
