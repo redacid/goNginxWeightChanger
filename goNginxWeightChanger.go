@@ -7,9 +7,10 @@ import (
 	//"os"
 	//"bufio"
 	"./myfu"
-
 	"os"
 	"encoding/json"
+	"log"
+	"os/exec"
 )
 
 type Config struct {
@@ -72,10 +73,16 @@ func main() {
 		fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
 	}
 	for _, FServer := range config.FrontendServers {
-		fmt.Printf("%s-%s:%d\n",FServer.Name,FServer.IP,FServer.SSHPort)
+		fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfigFile)
 	}
 	//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
 	//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
+
+	out, err := exec.Command("date").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("The date is %s\n", out)
 
 
 	switch {
