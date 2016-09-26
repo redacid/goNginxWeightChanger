@@ -27,13 +27,13 @@
   ],
   "FrontendServers": [
     {
-      "name": "fr1",
+      "name": "test1",
       "ip": "55.55.55.55",
       "sshPort": 22,
       "NginxConfFile": "/etc/nginx/nginx.conf"
     },
     {
-      "name": "fr2",
+      "name": "test2",
       "ip": "66.66.66.66",
       "sshPort": 22,
       "NginxConfFile": "/etc/nginx/nginx.conf"
