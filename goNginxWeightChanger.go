@@ -88,7 +88,7 @@ func main() {
 			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
 
 
-			out, err := exec.Command("ssh "+FServer.Name+"-p "+strconv.Itoa(FServer.SSHPort)+" date").Output()
+			out, err := exec.Command("/usr/bin/ssh "+FServer.Name+" -p "+strconv.Itoa(FServer.SSHPort)+" date").Output()
 			if err != nil {
 				log.Fatal(err)
 			}
