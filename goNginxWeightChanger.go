@@ -106,8 +106,11 @@ func main() {
 			if err == nil {
 				for _, v := range resp.Variables {
 					switch v.Type {
+					default:
+						fmt.Printf("Type: %d - Value: %v\n", v.Type, v.Value)
 					case gosnmp.OctetString:
 						log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
+						v.Value
 					}
 				}
 			}
