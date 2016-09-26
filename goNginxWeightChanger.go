@@ -75,6 +75,7 @@ func main() {
 	switch {
 	default:
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
+
 	case command == "showconfig":
 		fmt.Printf("%s","Backend Servers --------------------------------------\n")
 		for _, BServer := range config.BackendServers {
@@ -92,7 +93,8 @@ func main() {
 			log.Fatal(err)
 		}
 		fmt.Printf("The date is %s\n", out)
-	case command "snmpget":
+
+	case command == "snmpget":
 		for _, BServer := range config.BackendServers {
 
 			fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
@@ -111,6 +113,7 @@ func main() {
 			}
 
 		}
+
 	case command == "round":
 		fmt.Printf("%d", myfu.Round(floatForRound))
 
