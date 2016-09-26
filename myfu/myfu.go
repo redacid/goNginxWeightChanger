@@ -7,10 +7,25 @@ import (
 	"fmt"
 	"../github.com/alouca/gosnmp"
 	"log"
+	"sync"
+	"strings"
+	"os/exec"
 )
 
 const mib_percent_cpu_sys string = ".1.3.6.1.4.1.2021.11.9.0"
 const mib_percent_cpu_usr string = ".1.3.6.1.4.1.2021.11.10.0"
+
+func ExecCmd(cmd string, wg *sync.WaitGroup) {
+	fmt.Println(cmd)
+	parts := strings.Fields(cmd)
+	out, err := exec.Command(parts[0],parts[1]).Output()
+	if err != nil {
+		fmt.Println("error occured")
+		fmt.Printf("%s", err)
+	}
+	fmt.Printf("%s", out)
+	wg.Done()
+}
 
 func GetCpuLoad(host string) int {
 var sys,usr int

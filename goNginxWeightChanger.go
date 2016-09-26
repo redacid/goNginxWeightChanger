@@ -13,6 +13,7 @@ import (
 	"os/exec"
 	"strconv"
 	//"./github.com/alouca/gosnmp"
+	"sync"
 )
 
 type Config struct {
@@ -88,12 +89,19 @@ func main() {
 			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
 
 
-			out, err := exec.Command("/usr/bin/ssh "+FServer.Name+" -p "+strconv.Itoa(FServer.SSHPort)+" date").Output()
+			/*out, err := exec.Command("/usr/bin/ssh "+FServer.Name+" -p "+strconv.Itoa(FServer.SSHPort)+" date").Output()
 			if err != nil {
 				log.Fatal(err)
 			}
 			fmt.Printf("The date of "+FServer.Name+" is %s\n", out)
-
+			*/
+			wg := new(sync.WaitGroup)
+			commands := []string{"/usr/bin/ssh "+FServer.Name+" -p "+strconv.Itoa(FServer.SSHPort)+" date"}
+			for _, str := range commands {
+				wg.Add(1)
+				go myfu.ExecCmd(str, wg)
+			}
+			wg.Wait()
 
 		}
 		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
