@@ -73,7 +73,7 @@ func main() {
 	switch {
 	default:
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
-	case command == "showconfig"
+	case command == "showconfig":
 		for _, BServer := range config.BackendServers {
 			fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
 		}
