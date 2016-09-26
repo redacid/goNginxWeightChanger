@@ -84,7 +84,7 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			resp, err := s.Get(".1.3.6.1.4.1.2021.11.9.0")
+			resp, err := s.Get(".1.3.6.1.2.1.1.1.0")
 			if err == nil {
 				for _, v := range resp.Variables {
 					switch v.Type {
