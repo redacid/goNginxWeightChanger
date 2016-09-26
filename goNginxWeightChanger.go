@@ -67,27 +67,27 @@ func main() {
 	config := new(Config)
 	err := decoder.Decode(&config)
 	if err != nil {
-		//fmt.Printf("%s\n","Ошибка чтения файла конфигурации")
+		fmt.Printf("%s\n","Ошибка чтения файла конфигурации")
 	}
-	for _, BServer := range config.BackendServers {
-		fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
-	}
-	for _, FServer := range config.FrontendServers {
-		fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfigFile)
-	}
-	//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
-	//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
-
-	out, err := exec.Command("date").Output()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("The date is %s\n", out)
-
 
 	switch {
 	default:
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
+	case command == "showconfig"
+		for _, BServer := range config.BackendServers {
+			fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
+		}
+		for _, FServer := range config.FrontendServers {
+			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfigFile)
+		}
+		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
+		//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
+
+		out, err := exec.Command("date").Output()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("The date is %s\n", out)
 
 	case command == "round":
 		fmt.Printf("%d", myfu.Round(floatForRound))
