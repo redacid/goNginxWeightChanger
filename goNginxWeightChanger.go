@@ -10,7 +10,7 @@ import (
 	"os"
 	"encoding/json"
 	"log"
-	"os/exec"
+	//"os/exec"
 	"strconv"
 	//"./github.com/alouca/gosnmp"
 	"sync"
