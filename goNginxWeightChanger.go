@@ -96,7 +96,7 @@ func main() {
 			fmt.Printf("The date of "+FServer.Name+" is %s\n", out)
 			*/
 			wg := new(sync.WaitGroup)
-			commands := []string{"/usr/bin/ssh "+FServer.Name+" -p "+strconv.Itoa(FServer.SSHPort)+" date"}
+			commands := []string{"/usr/bin/ssh "+FServer.Name+" -p "+strconv.Itoa(FServer.SSHPort)+" \"date\" "}
 			for _, str := range commands {
 				wg.Add(1)
 				go myfu.ExecCmd(str, wg)
