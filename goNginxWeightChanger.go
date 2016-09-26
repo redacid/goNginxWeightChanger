@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"log"
 	"os/exec"
+	"./github.com/alouca/gosnmp"
 )
 
 type Config struct {
@@ -67,7 +68,8 @@ func main() {
 	config := new(Config)
 	err := decoder.Decode(&config)
 	if err != nil {
-		fmt.Printf("%s\n","Ошибка чтения файла конфигурации")
+		//fmt.Printf("%s\n","Ошибка чтения файла конфигурации")
+		log.Fatalf("%s\n","Ошибка чтения файла конфигурации")
 	}
 
 	switch {
@@ -78,6 +80,20 @@ func main() {
 		for _, BServer := range config.BackendServers {
 
 			fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
+			s, err := gosnmp.NewGoSNMP(BServer.IP, "public", gosnmp.Version2c, 5)
+			if err != nil {
+				log.Fatal(err)
+			}
+			resp, err := s.Get(".1.3.6.1.4.1.2021.11.9.0")
+			if err == nil {
+				for _, v := range resp.Variables {
+					switch v.Type {
+					case gosnmp.OctetString:
+						log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
+					}
+				}
+			}
+
 		}
 		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
 		for _, FServer := range config.FrontendServers {
