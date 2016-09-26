@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"log"
 	"os/exec"
-	"./github.com/alouca/gosnmp"
+	//"./github.com/alouca/gosnmp"
 )
 
 type Config struct {

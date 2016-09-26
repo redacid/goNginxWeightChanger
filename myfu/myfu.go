@@ -13,6 +13,7 @@ const mib_percent_cpu_sys string = ".1.3.6.1.4.1.2021.11.9.0"
 const mib_percent_cpu_usr string = ".1.3.6.1.4.1.2021.11.10.0"
 
 func GetCpuLoad(host string) int {
+var sys,usr int
 
 	s, err := gosnmp.NewGoSNMP(host, "public", gosnmp.Version2c, 5)
 	if err != nil {
@@ -24,16 +25,29 @@ func GetCpuLoad(host string) int {
 			switch v.Type {
 			default:
 				//fmt.Printf("Type: %d - Value: %v\n", host, v.Value)
-				return v.Value
+				sys = int(v.Value.(int))
 			case gosnmp.OctetString:
 				//log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
 
 			}
 		}
 	}
+	cpu_usr, err := s.Get(mib_percent_cpu_usr)
+	if err == nil {
+		for _, v := range cpu_usr.Variables {
+			switch v.Type {
+			default:
+				//fmt.Printf("Type: %d - Value: %v\n", host, v.Value)
+				usr = int(v.Value.(int))
+			case gosnmp.OctetString:
+			//log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
+
+			}
+		}
+	}
 
 
-
+	return sys+usr
 }
 
 func Round(f float64) int {
