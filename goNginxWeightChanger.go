@@ -78,9 +78,25 @@ func main() {
 	case command == "showconfig":
 		fmt.Printf("%s","Backend Servers --------------------------------------\n")
 		for _, BServer := range config.BackendServers {
+			fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
+		}
+		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
+		for _, FServer := range config.FrontendServers {
+			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
+		}
+		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
+		//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
+
+		out, err := exec.Command("date").Output()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("The date is %s\n", out)
+	case command "snmpget":
+		for _, BServer := range config.BackendServers {
 
 			fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
-			s, err := gosnmp.NewGoSNMP("144.76.225.213", "public", gosnmp.Version2c, 5)
+			s, err := gosnmp.NewGoSNMP(BServer.Name, "public", gosnmp.Version2c, 5)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -95,20 +111,6 @@ func main() {
 			}
 
 		}
-		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
-		for _, FServer := range config.FrontendServers {
-
-			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
-		}
-		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
-		//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
-
-		out, err := exec.Command("date").Output()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("The date is %s\n", out)
-
 	case command == "round":
 		fmt.Printf("%d", myfu.Round(floatForRound))
 
