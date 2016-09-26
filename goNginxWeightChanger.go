@@ -31,7 +31,7 @@ type FrontendServer struct {
 	Name string `json:"name"`
 	IP string `json:"ip"`
 	SSHPort int `json:"sshPort"`
-	NginxConfigFile int `json:"NginxConfigFile"`
+	NginxConfFile int `json:"NginxConfFile"`
 }
 
 //type ConfigGlobal struct {
@@ -78,7 +78,7 @@ func main() {
 			fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
 		}
 		for _, FServer := range config.FrontendServers {
-			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfigFile)
+			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
 		}
 		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
 		//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
