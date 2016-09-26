@@ -11,9 +11,11 @@ import (
 	"encoding/json"
 	"log"
 	//"os/exec"
-	"strconv"
+	//"strconv"
 	//"./github.com/alouca/gosnmp"
-	"sync"
+	//"sync"
+	"bytes"
+	"./github.com/evanphx/ssh"
 )
 
 type Config struct {
@@ -94,14 +96,41 @@ func main() {
 				log.Fatal(err)
 			}
 			fmt.Printf("The date of "+FServer.Name+" is %s\n", out)
-			*/
+
 			wg := new(sync.WaitGroup)
 			commands := []string{"/usr/bin/ssh "+FServer.Name+" -p "+strconv.Itoa(FServer.SSHPort)+" \"date\" "}
 			for _, str := range commands {
 				wg.Add(1)
 				go myfu.ExecCmd(str, wg)
 			}
-			wg.Wait()
+			wg.Wait()*/
+
+			config := &ssh.ClientConfig{
+
+			}
+			client, err := ssh.Dial("tcp", "test2:22", config)
+			if err != nil {
+				panic("Failed to dial: " + err.Error())
+			}
+
+			// Each ClientConn can support multiple interactive sessions,
+			// represented by a Session.
+			session, err := client.NewSession()
+			if err != nil {
+				panic("Failed to create session: " + err.Error())
+			}
+			defer session.Close()
+
+			// Once a Session is created, you can execute a single command on
+			// the remote side using the Run method.
+			var b bytes.Buffer
+			session.Stdout = &b
+			if err := session.Run("/usr/bin/whoami"); err != nil {
+				panic("Failed to run: " + err.Error())
+			}
+			fmt.Println(b.String())
+
+
 
 		}
 		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
