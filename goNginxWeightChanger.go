@@ -152,26 +152,11 @@ func main() {
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
 
-
-			/*out, err := exec.Command("/usr/bin/ssh "+FServer.Name+" -p "+strconv.Itoa(FServer.SSHPort)+" date").Output()
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmt.Printf("The date of "+FServer.Name+" is %s\n", out)
-
-			wg := new(sync.WaitGroup)
-			commands := []string{"/usr/bin/ssh "+FServer.Name+" -p "+strconv.Itoa(FServer.SSHPort)+" \"date\" "}
-			for _, str := range commands {
-				wg.Add(1)
-				go myfu.ExecCmd(str, wg)
-			}
-			wg.Wait()*/
-
 			cmd := "/usr/bin/whoami"
 			host := FServer.Name
 
-			results := make(chan string, 10)
-			timeout := time.After(5 * time.Second)
+			//results := make(chan string, 10)
+			//timeout := time.After(5 * time.Second)
 			config := &ssh.ClientConfig{
 				User: os.Getenv("LOGNAME"),
 				Auth: []ssh.ClientAuth{makeKeyring()},
