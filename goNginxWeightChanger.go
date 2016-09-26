@@ -110,7 +110,7 @@ func main() {
 						fmt.Printf("Type: %d - Value: %v\n", v.Type, v.Value)
 					case gosnmp.OctetString:
 						log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
-						v.Value
+
 					}
 				}
 			}
