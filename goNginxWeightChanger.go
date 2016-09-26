@@ -46,8 +46,8 @@ var strForGrep string
 var strForRepl string
 var fileForGrep string
 var floatForRound float64
-const mib_percent_cpu_sys string = '.1.3.6.1.4.1.2021.11.9.0'
-const mib_percent_cpu_usr string = '.1.3.6.1.4.1.2021.11.10.0'
+const mib_percent_cpu_sys string = ".1.3.6.1.4.1.2021.11.9.0"
+const mib_percent_cpu_usr string = ".1.3.6.1.4.1.2021.11.10.0"
 
 //var command = flag.String("command", "round", "Комманда(round...)")
 //var floatForRound = flag.Float64("floatForRound",1.5, "Округлить до целого")
@@ -104,7 +104,7 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			resp, err := s.Get(".1.3.6.1.4.1.2021.11.9.0")
+			resp, err := s.Get(mib_percent_cpu_sys)
 			if err == nil {
 				for _, v := range resp.Variables {
 					switch v.Type {
