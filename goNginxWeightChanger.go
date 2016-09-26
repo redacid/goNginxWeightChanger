@@ -85,15 +85,20 @@ func main() {
 		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
+
+
+			out, err := exec.Command("ssh "+FServer.Name+"-p "+FServer.SSHPort+" date").Output()
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Printf("The date of "+FServer.Name+" is %s\n", out)
+
+
 		}
 		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
 		//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
 
-		out, err := exec.Command("date").Output()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("The date is %s\n", out)
+
 
 	case command == "snmpget":
 		for _, BServer := range config.BackendServers {
