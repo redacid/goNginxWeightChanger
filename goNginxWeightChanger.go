@@ -31,7 +31,7 @@ type FrontendServer struct {
 	Name string `json:"name"`
 	IP string `json:"ip"`
 	SSHPort int `json:"sshPort"`
-	NginxConfFile int `json:"NginxConfFile"`
+	NginxConfFile string `json:"NginxConfFile"`
 }
 
 //type ConfigGlobal struct {
@@ -75,9 +75,11 @@ func main() {
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
 	case command == "showconfig":
 		for _, BServer := range config.BackendServers {
+			fmt.Printf("%s","Backend Servers --------------------------------------")
 			fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
 		}
 		for _, FServer := range config.FrontendServers {
+			fmt.Printf("%s","Frontend Servers -------------------------------------")
 			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
 		}
 		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
