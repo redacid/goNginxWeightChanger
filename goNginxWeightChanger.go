@@ -16,6 +16,9 @@ import (
 	//"sync"
 	"bytes"
 	"./github.com/evanphx/ssh"
+	"io/ioutil"
+	"io"
+	"time"
 )
 
 type Config struct {
@@ -55,6 +58,65 @@ var floatForRound float64
 //var command = flag.String("command", "round", "Комманда(round...)")
 //var floatForRound = flag.Float64("floatForRound",1.5, "Округлить до целого")
 //var ip = flag.Int("flagname", 1234, "help message for flagname")
+
+type SignerContainer struct {
+	signers []ssh.Signer
+}
+
+func (t *SignerContainer) Key(i int) (key ssh.PublicKey, err error) {
+	if i >= len(t.signers) {
+		return
+	}
+	key = t.signers[i].PublicKey()
+	return
+}
+
+func (t *SignerContainer) Sign(i int, rand io.Reader, data []byte) (sig []byte, err error) {
+	if i >= len(t.signers) {
+		return
+	}
+	sig, err = t.signers[i].Sign(rand, data)
+	return
+}
+
+func makeSigner(keyname string) (signer ssh.Signer, err error) {
+	fp, err := os.Open(keyname)
+	if err != nil {
+		return
+	}
+	defer fp.Close()
+
+	buf, _ := ioutil.ReadAll(fp)
+	signer, _ = ssh.ParsePrivateKey(buf)
+	return
+}
+
+func makeKeyring() ssh.ClientAuth {
+	signers := []ssh.Signer{}
+	keys := []string{os.Getenv("HOME") + "/.ssh/id_rsa", os.Getenv("HOME") + "/.ssh/id_dsa"}
+
+	for _, keyname := range keys {
+		signer, err := makeSigner(keyname)
+		if err == nil {
+			signers = append(signers, signer)
+		}
+	}
+
+	return ssh.ClientAuthKeyring(&SignerContainer{signers})
+}
+
+func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
+	conn, _ := ssh.Dial("tcp", hostname+":22", config)
+	session, _ := conn.NewSession()
+	defer session.Close()
+
+	var stdoutBuf bytes.Buffer
+	session.Stdout = &stdoutBuf
+	session.Run(cmd)
+
+	return hostname + ": " + stdoutBuf.String()
+}
+
 
 func init() {
 	flag.StringVar(&command, "c", command, "Комманда(round,grep,replace ...)")
@@ -105,31 +167,16 @@ func main() {
 			}
 			wg.Wait()*/
 
+			cmd := "/usr/bin/whoami"
+			host := FServer.Name
+
+			results := make(chan string, 10)
+			timeout := time.After(5 * time.Second)
 			config := &ssh.ClientConfig{
-
+				User: os.Getenv("LOGNAME"),
+				Auth: []ssh.ClientAuth{makeKeyring()},
 			}
-			client, err := ssh.Dial("tcp", "test2:22", config)
-			if err != nil {
-				panic("Failed to dial: " + err.Error())
-			}
-
-			// Each ClientConn can support multiple interactive sessions,
-			// represented by a Session.
-			session, err := client.NewSession()
-			if err != nil {
-				panic("Failed to create session: " + err.Error())
-			}
-			defer session.Close()
-
-			// Once a Session is created, you can execute a single command on
-			// the remote side using the Run method.
-			var b bytes.Buffer
-			session.Stdout = &b
-			if err := session.Run("/usr/bin/whoami"); err != nil {
-				panic("Failed to run: " + err.Error())
-			}
-			fmt.Println(b.String())
-
+			fmt.Printf("%s",executeCmd(cmd, host, config))
 
 
 		}
