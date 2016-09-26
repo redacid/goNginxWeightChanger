@@ -8,7 +8,36 @@ import (
 	//"bufio"
 	"./myfu"
 
+	"os"
+	"encoding/json"
 )
+
+type Config struct {
+	BackendServers []BackendServer
+	FrontendServers []FrontendServer
+//	ConfigGlobal ConfigGlobal
+}
+
+type BackendServer struct {
+	Name string `json:"name"`
+	IP string `json:"ip"`
+	SSHPort int `json:"sshPort"`
+	Priority int `json:"priority"`
+	DefaultWeight int `json:"defaultWeight"`
+	LastWeight int `json:"lastWeight"`
+}
+type FrontendServer struct {
+	Name string `json:"name"`
+	IP string `json:"ip"`
+	SSHPort int `json:"sshPort"`
+	NginxConfigFile int `json:"NginxConfigFile"`
+}
+
+//type ConfigGlobal struct {
+//	RegExNginxServer string `json:"RegExNginxServer"`
+//	NginxServerString string `json:"NginxServerString"`
+//}
+
 
 var command string
 var strForGrep string
@@ -28,30 +57,41 @@ func init() {
 	flag.StringVar (&fileForGrep, "grepfile", strForGrep, "Файл для grep фильтра")
 }
 
-
-//func main() {
-//	flag.Parse()
-//	if flag.NArg() == 3 {
-//		repl(flag.Arg(0), flag.Arg(1), flag.Arg(2))
-//	} else {
-//		fmt.Printf("Wrong number of arguments.\n")
-//	}
-//}
-
 func main() {
 	flag.Parse()
+
+	//Парсим файл конфигурации
+	file, _ := os.Open("./config.json")
+	decoder := json.NewDecoder(file)
+	config := new(Config)
+	err := decoder.Decode(&config)
+	if err != nil {
+		//fmt.Printf("%s\n","Ошибка чтения файла конфигурации")
+	}
+	for _, BServer := range config.BackendServers {
+		fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
+	}
+	for _, FServer := range config.FrontendServers {
+		fmt.Printf("%s-%s:%d\n",FServer.Name,FServer.IP,FServer.SSHPort)
+	}
+	//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
+	//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
+
+
 	switch {
 	default:
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
+
 	case command == "round":
 		fmt.Printf("%d", myfu.Round(floatForRound))
+
 	case command == "grep":
 		//fmt.Printf("%d", round(floatForRound))
 		// ./goNginxWeightChanger -c grep -grep="(server)(\s+)(back4)(\s+)(weight)(=)(\d+)(\s+)(max_fails)(=)(\d+)(\s+)(fail_timeout)(=)(5)(;)" -grepfile="nginx.conf"
 		myfu.Grep2(strForGrep, fileForGrep)
+
 	case command == "replace":
 		// ./goNginxWeightChanger -c replace -grep="(server)(\s+)(back4)(\s+)(weight)(=)(\d+)(\s+)(max_fails)(=)(\d+)(\s+)(fail_timeout)(=)(5)(;)" -replace "sdfsdfsdf" -grepfile="nginx.conf"
-
 		myfu.Replace(strForGrep,strForRepl,fileForGrep)
 
 

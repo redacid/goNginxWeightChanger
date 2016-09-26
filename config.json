@@ -1,0 +1,42 @@
+{
+  "backendServers": [
+    {
+      "name": "back1",
+      "ip": "11.11.11.11",
+      "sshPort": 22,
+      "priority": 1,
+      "defaultWeight": 50,
+      "lastWeight": 60
+    },
+    {
+      "name": "back3",
+      "ip": "33.33.33.33",
+      "sshPort": 22,
+      "priority": 2,
+      "defaultWeight": 40,
+      "lastWeight": 50
+    },
+    {
+      "name": "back4",
+      "ip": "44.44.44.44",
+      "sshPort": 22,
+      "priority": 2,
+      "defaultWeight": 40,
+      "lastWeight": 50
+    }
+  ],
+  "FrontendServers": [
+    {
+      "name": "fr1",
+      "ip": "55.55.55.55",
+      "sshPort": 22,
+      "NginxConfFile": "/etc/nginx/nginx.conf"
+    },
+    {
+      "name": "fr2",
+      "ip": "66.66.66.66",
+      "sshPort": 22,
+      "NginxConfFile": "/etc/nginx/nginx.conf"
+    }
+  ]
+}
