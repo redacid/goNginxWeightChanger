@@ -18,7 +18,7 @@ import (
 	"./github.com/evanphx/ssh"
 	"io/ioutil"
 	"io"
-	"time"
+	//"time"
 )
 
 type Config struct {
@@ -93,7 +93,7 @@ func makeSigner(keyname string) (signer ssh.Signer, err error) {
 
 func makeKeyring() ssh.ClientAuth {
 	signers := []ssh.Signer{}
-	keys := []string{os.Getenv("HOME") + "/.ssh/id_rsa", os.Getenv("HOME") + "/.ssh/id_dsa"}
+	keys := []string{os.Getenv("HOME") + "/.ssh/id_rsa", os.Getenv("HOME") + "/.ssh/authorized_keys"}
 
 	for _, keyname := range keys {
 		signer, err := makeSigner(keyname)
