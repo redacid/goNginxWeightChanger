@@ -94,6 +94,7 @@ func makeSigner(keyname string) (signer ssh.Signer, err error) {
 func makeKeyring() ssh.ClientAuth {
 	signers := []ssh.Signer{}
 	keys := []string{os.Getenv("HOME") + "/.ssh/id_rsa", os.Getenv("HOME") + "/.ssh/authorized_keys"}
+	fmt.Printf("%s | %s",string[0],string[1])
 
 	for _, keyname := range keys {
 		signer, err := makeSigner(keyname)
