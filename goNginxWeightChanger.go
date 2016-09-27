@@ -61,7 +61,9 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 	session.Stdout = &stdoutBuf
 	session.Run(cmd)
 
-	return hostname + ": " + stdoutBuf.String()
+	//return hostname + ": " + stdoutBuf.String()
+	return stdoutBuf.String()
+
 }
 
 
@@ -128,7 +130,7 @@ func main() {
 			//fmt.Printf("%s\n",NginxServerLine)
 
 			NginxServerLine := executeCmd(NginxServerLineCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config)
-			fmt.Printf("%s\n",NginxServerLineCmd)
+			//fmt.Printf("%s\n",NginxServerLineCmd)
 			fmt.Printf("%s\n",NginxServerLine)
 			fmt.Printf("%s\n",NginxServerNewLine)
 			sshcmd := "/usr/bin/whoami"
