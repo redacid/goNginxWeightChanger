@@ -43,11 +43,11 @@ type FrontendServer struct {
 
 
 var command string
-var strForGrep string
-var strForRepl string
-var fileForGrep string
+//var strForGrep string
+//var strForRepl string
+//var fileForGrep string
 var writeWeightChanges string
-var floatForRound float64
+//var floatForRound float64
 
 
 //var command = flag.String("command", "round", "Комманда(round...)")
@@ -70,12 +70,13 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 
 
 func init() {
-	flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
+	//flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
+	flag.StringVar(&command, "c", command, "Комманда(showconfig,changeweight ...)")
 	flag.StringVar (&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\no) Записать извенения веса(changeweight), \n в  противном случае только показ изменений")
-	flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
-	flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
-	flag.StringVar (&strForRepl, "replace", strForRepl, "Строка для замены по grep фильтру")
-	flag.StringVar (&fileForGrep, "grepfile", strForGrep, "Файл для grep фильтра")
+	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
+	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
+	//flag.StringVar (&strForRepl, "replace", strForRepl, "Строка для замены по grep фильтру")
+	//flag.StringVar (&fileForGrep, "grepfile", strForGrep, "Файл для grep фильтра")
 }
 
 func main() {
@@ -167,15 +168,13 @@ func main() {
 					sshcmd = "sed -e '/^[ \\t]*#/!s/"+ strings.TrimRight(NginxServerLine,"\r\n") +"/"+ NginxServerNewLine +"/g' "+FServer.NginxConfFile
 				}
 
-
 				fmt.Printf("%s\n",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
-
 			}
 				nginxReloadCmd := "/etc/init.d/nginx reload"
 			fmt.Printf("%s\n",executeCmd(nginxReloadCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 
 		}
-	case command == "snmpget":
+	/*case command == "snmpget":
 		for _, BServer := range config.BackendServers {
 
 			fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
@@ -193,6 +192,6 @@ func main() {
 		// ./goNginxWeightChanger -c replace -grep="(server)(\s+)(back4)(\s+)(weight)(=)(\d+)(\s+)(max_fails)(=)(\d+)(\s+)(fail_timeout)(=)(5)(;)" -replace "sdfsdfsdf" -grepfile="nginx.conf"
 		myfu.Replace(strForGrep,strForRepl,fileForGrep)
 
-
+	*/
 	}
 }
