@@ -7,7 +7,7 @@
       "priority": 1,
       "defaultWeight": 50,
       "lastWeight": 60,
-      "disable":1
+      "state":"enable"
     },
     {
       "name": "tback2:81",
@@ -16,7 +16,7 @@
       "priority": 2,
       "defaultWeight": 40,
       "lastWeight": 50,
-      "disable":0
+      "state":"backup"
     },
     {
       "name": "tback3:81",
@@ -25,7 +25,7 @@
       "priority": 2,
       "defaultWeight": 40,
       "lastWeight": 50,
-      "disable":0
+      "state":"enable"
     }
   ],
   "FrontendServers": [
