@@ -125,10 +125,10 @@ func main() {
 			sshcmd := "/usr/bin/whoami"
 
 			NginxServerRegexp := "(server)(\\s+)("+FServer.Name+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5)(;)"
-            		//line=`cat ${file} | grep -P ${regexp} | grep ${host} | sed 's/^[ \t]*//' | grep -v ^"#" |head -n 1`
+			NginxServerLine := "cat "+FServer.NginxConfFile+" | grep -P "+NginxServerRegexp+"| grep "+FServer.Name+" | sed 's/^[ \t]*//' | grep -v ^\"#\" | head -n 1"
 			//newline="server $host weight=$weight max_fails=1 fail_timeout=5; #$comment"
 			//sed -i -e "/^[ \t]*#/!s/$line/$newline/g" ${file}
-			fmt.Printf("%s",NginxServerRegexp)
+			fmt.Printf("%s",NginxServerLine)
 			fmt.Printf("%s",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config))
 
 		}
