@@ -129,7 +129,7 @@ func main() {
 			//newline="server $host weight=$weight max_fails=1 fail_timeout=5; #$comment"
 			//sed -i -e "/^[ \t]*#/!s/$line/$newline/g" ${file}
 			fmt.Printf("%s",NginxServerLine)
-			fmt.Printf("%s",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config))
+			//fmt.Printf("%s",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config))
 
 		}
 		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
