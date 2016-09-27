@@ -121,16 +121,21 @@ func main() {
 
 			BackendServerNewWeight := 55
 			NginxServerRegexp := "(server)(\\s+)("+FServer.Name+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5)(;)"
-			NginxServerLine := "cat \""+FServer.NginxConfFile+"\" | grep -P \""+NginxServerRegexp+"\"| grep \""+FServer.Name+"\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
+			NginxServerLineCmd := "cat \""+FServer.NginxConfFile+"\" | grep -P \""+NginxServerRegexp+"\"| grep \""+FServer.Name+"\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
 			NginxServerNewLine := "\"server "+FServer.Name+" weight=" + strconv.Itoa(BackendServerNewWeight)+" max_fails=1 fail_timeout=5; #"+FServer.Name+"\""
 			//newline="server $host weight=$weight max_fails=1 fail_timeout=5; #$comment"
 			//sed -i -e "/^[ \t]*#/!s/$line/$newline/g" ${file}
 			//fmt.Printf("%s\n",NginxServerLine)
-			//fmt.Printf("%s\n",NginxServerNewLine)
+
+			NginxServerLine := executeCmd(NginxServerLineCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config)
+			fmt.Printf("%s\n",NginxServerLine)
+			fmt.Printf("%s\n",NginxServerNewLine)
 			sshcmd := "/usr/bin/whoami"
-			sshcmd2 := "sed -e \"/^[ \\t]*#/!s/`"+ NginxServerLine +"`/"+ NginxServerNewLine +"/g\" "+FServer.NginxConfFile
-			fmt.Printf("%s\n",sshcmd2)
+			//sshcmd2 := "sed -e \"/^[ \\t]*#/!s/`"+ NginxServerLine +"`/"+ NginxServerNewLine +"/g\" "+FServer.NginxConfFile
+			//fmt.Printf("%s\n",sshcmd2)
 			//fmt.Printf("%s\n",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config))
+
+
 			executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config)
 
 		}
