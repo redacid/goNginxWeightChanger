@@ -68,7 +68,7 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 
 
 func init() {
-	flag.StringVar(&command, "c", command, "Комманда(round,grep,replace ...)")
+	flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
 	flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
 	flag.StringVar (&strForRepl, "replace", strForRepl, "Строка для замены по grep фильтру")
@@ -94,10 +94,19 @@ func main() {
 
 	case command == "showconfig":
 		fmt.Printf("%s","Backend Servers --------------------------------------\n")
-		/*for _, BServer := range config.BackendServers {
-			//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
-			fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
-		}*/
+		for _, BServer := range config.BackendServers {
+			fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
+			//fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
+		}
+		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
+		for _, FServer := range config.FrontendServers {
+			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
+		}
+		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
+		//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
+
+
+	case command == "changeweight":
 		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
@@ -138,17 +147,10 @@ func main() {
 
 
 		}
-		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
-		//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
-
-
-
 	case command == "snmpget":
 		for _, BServer := range config.BackendServers {
 
 			fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
-
-
 		}
 
 	case command == "round":
