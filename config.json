@@ -33,19 +33,19 @@
       "name": "test1",
       "ip": "192.168.4.20",
       "sshPort": 22,
-      "NginxConfFile": "/home/redacid/goNginxWeightChanger/nginx.conf"
+      "NginxConfFile": "/etc/nginx/conf.d/upstream-web.conf"
     },
     {
       "name": "test2",
       "ip": "192.168.4.21",
       "sshPort": 22,
-      "NginxConfFile": "/home/redacid/goNginxWeightChanger/nginx.conf"
-    }
+      "NginxConfFile": "/etc/nginx/conf.d/upstream-web.conf"
+    },
     {
       "name": "test3",
       "ip": "192.168.4.22",
       "sshPort": 22,
-      "NginxConfFile": "/home/redacid/goNginxWeightChanger/nginx.conf"
+      "NginxConfFile": "/etc/nginx/conf.d/upstream-web.conf"
     }
   ]
 }
