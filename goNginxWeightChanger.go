@@ -128,7 +128,7 @@ func main() {
 			fmt.Printf("%s\n",NginxServerLine)
 			fmt.Printf("%s\n",NginxServerNewLine)
 			sshcmd := "/usr/bin/whoami"
-			sshcmd2 := "sed -e \"/^[ \\t]*#/!s/`"+ NginxServerLine +"`/"+ NginxServerNewLine +"/g "+FServer.NginxConfFile
+			sshcmd2 := "sed -e \"/^[ \\t]*#/!s/`\""+ NginxServerLine +"\"`/\""+ NginxServerNewLine +"\"/g "+FServer.NginxConfFile
 			fmt.Printf("%s\n",sshcmd2)
 			fmt.Printf("%s\n",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config))
 
