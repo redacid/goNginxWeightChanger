@@ -124,7 +124,7 @@ func main() {
 			BackendServerNewWeight := 55
 			NginxServerRegexp := "(server)(\\s+)("+FServer.Name+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5)(;)"
 			NginxServerLineCmd := "cat \""+FServer.NginxConfFile+"\" | grep -P \""+NginxServerRegexp+"\"| grep \""+FServer.Name+"\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
-			NginxServerNewLine := "\"server "+FServer.Name+" weight=" + strconv.Itoa(BackendServerNewWeight)+" max_fails=1 fail_timeout=5; #"+FServer.Name+"\""
+			NginxServerNewLine := "server "+FServer.Name+" weight=" + strconv.Itoa(BackendServerNewWeight)+" max_fails=1 fail_timeout=5; #"+FServer.Name+""
 			//newline="server $host weight=$weight max_fails=1 fail_timeout=5; #$comment"
 			//sed -i -e "/^[ \t]*#/!s/$line/$newline/g" ${file}
 			//fmt.Printf("%s\n",NginxServerLine)
