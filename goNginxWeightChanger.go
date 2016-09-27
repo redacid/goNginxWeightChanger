@@ -167,7 +167,7 @@ func main() {
 				} else if writeWeightChanges == "no" {
 					sshcmd = "sed -e '/^[ \\t]*#/!s/"+ strings.TrimRight(NginxServerLine,"\r\n") +"/"+ NginxServerNewLine +"/g' "+FServer.NginxConfFile
 				} else {
-					log.Fatalf("unable to parse private key: %v",nil)
+					log.Fatalf("Не определен параметр writeWeightChanges, введите -h для помощи %v",nil)
 					os.Exit(1)
 				}
 
