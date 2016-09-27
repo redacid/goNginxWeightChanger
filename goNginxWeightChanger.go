@@ -3,23 +3,14 @@ package main
 import (
 	"fmt"
 	"flag"
-	//"regexp"
-	//"os"
-	//"bufio"
 	"./myfu"
 	"os"
 	"encoding/json"
 	"log"
-	//"os/exec"
-	//"strconv"
-	//"./github.com/alouca/gosnmp"
-	//"sync"
 	"bytes"
 	"./github.com/redacid/crypto/ssh"
 	"io/ioutil"
-	//"io"
-	//"time"
-//	"time"
+
 )
 
 type Config struct {
@@ -132,7 +123,7 @@ func main() {
 				},
 			}
 
-			executeCmd(cmd, host, config)
+			fmt.Printf("%s",executeCmd(cmd, host, config)
 
 		}
 		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
