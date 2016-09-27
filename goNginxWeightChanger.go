@@ -94,10 +94,10 @@ func main() {
 
 	case command == "showconfig":
 		fmt.Printf("%s","Backend Servers --------------------------------------\n")
-		for _, BServer := range config.BackendServers {
+		/*for _, BServer := range config.BackendServers {
 			//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
 			fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
-		}
+		}*/
 		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
@@ -113,22 +113,29 @@ func main() {
 				log.Fatalf("unable to parse private key: %v", err)
 			}
 
-			config := &ssh.ClientConfig{
+			sshConfig := &ssh.ClientConfig{
 				User: os.Getenv("LOGNAME"),
 				Auth: []ssh.AuthMethod{
 					// Use the PublicKeys method for remote authentication.
 					ssh.PublicKeys(signer),
 				},
 			}
+			fmt.Printf("%s","Backend Servers --------------------------------------\n")
+			for _, BServer := range config.BackendServers {
+				//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
+				fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
+
+				BackendServerNewWeight := 100-myfu.GetCpuLoad(BServer.Name)
+				NginxServerRegexp := "(server)(\\s+)("+BServer.Name+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5)(;)"
+				NginxServerLineCmd := "cat \""+FServer.NginxConfFile+"\" | grep -P \""+NginxServerRegexp+"\"| grep \""+BServer.Name+"\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
+				NginxServerLine := executeCmd(NginxServerLineCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
+				NginxServerNewLine := "server "+BServer.Name+" weight=" + strconv.Itoa(BackendServerNewWeight)+" max_fails=1 fail_timeout=5; #"+BServer.Name+""
+				sshcmd := "sed -e '/^[ \\t]*#/!s/"+ strings.TrimRight(NginxServerLine,"\r\n") +"/"+ NginxServerNewLine +"/g' "+FServer.NginxConfFile
+				fmt.Printf("%s\n",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
+
+			}
 
 
-			BackendServerNewWeight := 55
-			NginxServerRegexp := "(server)(\\s+)("+FServer.Name+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5)(;)"
-			NginxServerLineCmd := "cat \""+FServer.NginxConfFile+"\" | grep -P \""+NginxServerRegexp+"\"| grep \""+FServer.Name+"\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
-			NginxServerLine := executeCmd(NginxServerLineCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config)
-			NginxServerNewLine := "server "+FServer.Name+" weight=" + strconv.Itoa(BackendServerNewWeight)+" max_fails=1 fail_timeout=5; #"+FServer.Name+""
-			sshcmd := "sed -e '/^[ \\t]*#/!s/"+ strings.TrimRight(NginxServerLine,"\r\n") +"/"+ NginxServerNewLine +"/g' "+FServer.NginxConfFile
-			fmt.Printf("%s\n",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config))
 
 		}
 		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
