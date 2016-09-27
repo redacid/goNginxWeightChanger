@@ -30,13 +30,13 @@
       "name": "test1",
       "ip": "55.55.55.55",
       "sshPort": 22,
-      "NginxConfFile": "nginx.conf"
+      "NginxConfFile": "/home/redacid/goNginxWeightChanger/nginx.conf"
     },
     {
       "name": "test2",
       "ip": "66.66.66.66",
       "sshPort": 22,
-      "NginxConfFile": "nginx.conf"
+      "NginxConfFile": "/home/redacid/goNginxWeightChanger/nginx.conf"
     }
   ]
 }
