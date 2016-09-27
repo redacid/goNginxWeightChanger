@@ -95,7 +95,8 @@ func main() {
 	case command == "showconfig":
 		fmt.Printf("%s","Backend Servers --------------------------------------\n")
 		for _, BServer := range config.BackendServers {
-			fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
+			//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
+			fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
 		}
 		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
 		for _, FServer := range config.FrontendServers {
@@ -124,21 +125,9 @@ func main() {
 			BackendServerNewWeight := 55
 			NginxServerRegexp := "(server)(\\s+)("+FServer.Name+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5)(;)"
 			NginxServerLineCmd := "cat \""+FServer.NginxConfFile+"\" | grep -P \""+NginxServerRegexp+"\"| grep \""+FServer.Name+"\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
-			NginxServerNewLine := "server "+FServer.Name+" weight=" + strconv.Itoa(BackendServerNewWeight)+" max_fails=1 fail_timeout=5; #"+FServer.Name+""
-			//newline="server $host weight=$weight max_fails=1 fail_timeout=5; #$comment"
-			//sed -i -e "/^[ \t]*#/!s/$line/$newline/g" ${file}
-			//fmt.Printf("%s\n",NginxServerLine)
-
 			NginxServerLine := executeCmd(NginxServerLineCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config)
-			//fmt.Printf("%s\n",NginxServerLineCmd)
-			//fmt.Printf("%s\n",NginxServerLine)
-			//fmt.Printf("%s\n",NginxServerNewLine)
-			//sshcmd := "/usr/bin/whoami"
+			NginxServerNewLine := "server "+FServer.Name+" weight=" + strconv.Itoa(BackendServerNewWeight)+" max_fails=1 fail_timeout=5; #"+FServer.Name+""
 			sshcmd := "sed -e '/^[ \\t]*#/!s/"+ strings.TrimRight(NginxServerLine,"\r\n") +"/"+ NginxServerNewLine +"/g' "+FServer.NginxConfFile
-			//fmt.Printf("%s\n",sshcmd2)
-			//fmt.Printf("%s\n",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config))
-
-
 			fmt.Printf("%s\n",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config))
 
 		}
