@@ -46,6 +46,7 @@ var command string
 var strForGrep string
 var strForRepl string
 var fileForGrep string
+var writeWeightChanges string
 var floatForRound float64
 
 
@@ -70,6 +71,7 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 
 func init() {
 	flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
+	flag.StringVar (&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\no) Записать извенения веса(changeweight), \n в  противном случае только показ изменений")
 	flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
 	flag.StringVar (&strForRepl, "replace", strForRepl, "Строка для замены по grep фильтру")
@@ -135,6 +137,8 @@ func main() {
 			}
 			fmt.Printf("%s","Backend Servers --------------------------------------\n")
 			for _, BServer := range config.BackendServers {
+				var sshcmd string
+
 				//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
 				fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
 
@@ -156,7 +160,14 @@ func main() {
 				NginxServerLineCmd := "cat \""+FServer.NginxConfFile+"\" | grep -P \""+NginxServerRegexp+"\"| grep \""+BServer.Name+"\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
 				NginxServerLine := executeCmd(NginxServerLineCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
 				NginxServerNewLine := "server "+BServer.Name+" weight=" + strconv.Itoa(BackendServerNewWeight)+" max_fails=1 fail_timeout=5 "+BackendBackupFlag+"; #"+BServer.Name+""
-				sshcmd := "sed -i -e '/^[ \\t]*#/!s/"+ strings.TrimRight(NginxServerLine,"\r\n") +"/"+ NginxServerNewLine +"/g' "+FServer.NginxConfFile
+
+				if writeWeightChanges == "yes" {
+					sshcmd = "sed -i -e '/^[ \\t]*#/!s/"+ strings.TrimRight(NginxServerLine,"\r\n") +"/"+ NginxServerNewLine +"/g' "+FServer.NginxConfFile
+				} else if writeWeightChanges == "no" {
+					sshcmd = "sed -e '/^[ \\t]*#/!s/"+ strings.TrimRight(NginxServerLine,"\r\n") +"/"+ NginxServerNewLine +"/g' "+FServer.NginxConfFile
+				}
+
+
 				fmt.Printf("%s\n",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 
 			}
