@@ -99,11 +99,6 @@ func main() {
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
 
-
-
-			//		results := make(chan string, 10)
-	//		timeout := time.After(5 * time.Second)
-
 			pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
 			if err != nil {
 				log.Fatalf("unable to read private key: %v", err)
@@ -124,11 +119,14 @@ func main() {
 			}
 			sshcmd := "/usr/bin/whoami"
 
+			BackendServerNewWeight := 55
 			NginxServerRegexp := "(server)(\\s+)("+FServer.Name+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5)(;)"
 			NginxServerLine := "cat "+FServer.NginxConfFile+" | grep -P "+NginxServerRegexp+"| grep "+FServer.Name+" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
+			NginxServerNewLine := "server "+FServer.Name+" weight=" + strconv.Itoa(BackendServerNewWeight)+" max_fails=1 fail_timeout=5; #"+FServer.Name
 			//newline="server $host weight=$weight max_fails=1 fail_timeout=5; #$comment"
 			//sed -i -e "/^[ \t]*#/!s/$line/$newline/g" ${file}
 			fmt.Printf("%s\n",NginxServerLine)
+			fmt.Printf("%s\n",NginxServerNewLine)
 			fmt.Printf("%s\n",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), config))
 
 		}
