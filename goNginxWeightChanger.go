@@ -52,7 +52,7 @@ var floatForRound float64
 //var ip = flag.Int("flagname", 1234, "help message for flagname")
 
 func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
-	conn, _ := ssh.Dial("tcp", hostname + ":22", config)
+	conn, _ := ssh.Dial("tcp", hostname, config)
 	session, _ := conn.NewSession()
 	defer session.Close()
 
@@ -99,9 +99,8 @@ func main() {
 			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
 
 
-			cmd := "/usr/bin/whoami"
-			host := FServer.Name
-	//		results := make(chan string, 10)
+
+			//		results := make(chan string, 10)
 	//		timeout := time.After(5 * time.Second)
 
 			pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
@@ -122,8 +121,14 @@ func main() {
 					ssh.PublicKeys(signer),
 				},
 			}
+			sshcmd := "/usr/bin/whoami"
 
-			fmt.Printf("%s",executeCmd(cmd, host, config))
+			NginxServerRegexp := "(server)(\\s+)("+FServer.Name+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5)(;)"
+            		//line=`cat ${file} | grep -P ${regexp} | grep ${host} | sed 's/^[ \t]*//' | grep -v ^"#" |head -n 1`
+			//newline="server $host weight=$weight max_fails=1 fail_timeout=5; #$comment"
+			//sed -i -e "/^[ \t]*#/!s/$line/$newline/g" ${file}
+			fmt.Printf("%s",NginxServerRegexp)
+			fmt.Printf("%s",executeCmd(sshcmd, FServer.Name+":"+FServer.SSHPort, config))
 
 		}
 		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
