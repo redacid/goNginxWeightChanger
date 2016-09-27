@@ -1,7 +1,7 @@
 {
   "backendServers": [
     {
-      "name": "tback1",
+      "name": "tback1:81",
       "ip": "192.168.4.20",
       "sshPort": 22,
       "priority": 1,
@@ -10,7 +10,7 @@
       "disable":1
     },
     {
-      "name": "tback2",
+      "name": "tback2:81",
       "ip": "192.168.4.21",
       "sshPort": 22,
       "priority": 2,
@@ -19,7 +19,7 @@
       "disable":0
     },
     {
-      "name": "tback3",
+      "name": "tback3:81",
       "ip": "192.168.4.22",
       "sshPort": 22,
       "priority": 2,
