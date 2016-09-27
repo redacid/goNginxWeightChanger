@@ -144,10 +144,10 @@ func main() {
 					BackendServerNewWeight = 100-myfu.GetCpuLoad(BServer.Name)
 				}
 				if BServer.State == "backup" {
-					BackendBackupFlag:="backup"
+					BackendBackupFlag = "backup"
 
 				} else {
-					BackendBackupFlag:=""
+					BackendBackupFlag = ""
 
 				}
 
