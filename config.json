@@ -10,7 +10,7 @@
       "disable":1
     },
     {
-      "name": "tback3",
+      "name": "tback2",
       "ip": "192.168.4.21",
       "sshPort": 22,
       "priority": 2,
@@ -19,7 +19,7 @@
       "disable":0
     },
     {
-      "name": "tback4",
+      "name": "tback3",
       "ip": "192.168.4.22",
       "sshPort": 22,
       "priority": 2,
