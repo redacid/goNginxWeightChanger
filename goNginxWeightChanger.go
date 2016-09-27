@@ -151,7 +151,7 @@ func main() {
 				fmt.Printf("%s\n",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 
 			}
-				nginxReloadCmd := "/etc/init.d/grinx reload"
+				nginxReloadCmd := "/etc/init.d/nginx reload"
 			fmt.Printf("%s\n",executeCmd(nginxReloadCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 
 		}
