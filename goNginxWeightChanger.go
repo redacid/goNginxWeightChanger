@@ -137,7 +137,7 @@ func main() {
 				fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
 
 				if BServer.Disable == 1 {
-					BackendServerNewWeight = 0
+					BackendServerNewWeight = 1
 				} else {
 					BackendServerNewWeight = 100-myfu.GetCpuLoad(BServer.Name)
 				}
