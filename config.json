@@ -6,7 +6,8 @@
       "sshPort": 22,
       "priority": 1,
       "defaultWeight": 50,
-      "lastWeight": 60
+      "lastWeight": 60,
+      "disable":1
     },
     {
       "name": "back3",
@@ -14,7 +15,8 @@
       "sshPort": 22,
       "priority": 2,
       "defaultWeight": 40,
-      "lastWeight": 50
+      "lastWeight": 50,
+      "disable":0
     },
     {
       "name": "back4",
@@ -22,7 +24,8 @@
       "sshPort": 22,
       "priority": 2,
       "defaultWeight": 40,
-      "lastWeight": 50
+      "lastWeight": 50,
+      "disable":0
     }
   ],
   "FrontendServers": [

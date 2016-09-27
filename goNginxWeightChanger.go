@@ -27,6 +27,7 @@ type BackendServer struct {
 	Priority int `json:"priority"`
 	DefaultWeight int `json:"defaultWeight"`
 	LastWeight int `json:"lastWeight"`
+	Disable int `json:"disable"`
 }
 type FrontendServer struct {
 	Name string `json:"name"`
@@ -107,6 +108,7 @@ func main() {
 
 
 	case command == "changeweight":
+		var BackendServerNewWeight int
 		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
@@ -134,7 +136,13 @@ func main() {
 				//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
 				fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
 
-				BackendServerNewWeight := 100-myfu.GetCpuLoad(BServer.Name)
+				if BServer.Disable == 1 {
+					BackendServerNewWeight = 0
+				} else {
+					BackendServerNewWeight = 100-myfu.GetCpuLoad(BServer.Name)
+				}
+
+
 				NginxServerRegexp := "(server)(\\s+)("+BServer.Name+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5)(;)"
 				NginxServerLineCmd := "cat \""+FServer.NginxConfFile+"\" | grep -P \""+NginxServerRegexp+"\"| grep \""+BServer.Name+"\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
 				NginxServerLine := executeCmd(NginxServerLineCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
