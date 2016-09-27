@@ -123,7 +123,7 @@ func main() {
 				},
 			}
 
-			fmt.Printf("%s",executeCmd(cmd, host, config)
+			fmt.Printf("%s",executeCmd(cmd, host, config))
 
 		}
 		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
