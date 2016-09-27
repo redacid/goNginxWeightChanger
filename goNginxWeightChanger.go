@@ -72,7 +72,7 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 func init() {
 	//flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
 	flag.StringVar(&command, "c", command, "Комманда(showconfig,changeweight ...)")
-	flag.StringVar (&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\no) Записать извенения веса(changeweight), \n в  противном случае только показ изменений")
+	flag.StringVar (&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Записать извенения веса(changeweight), \n в  противном случае только показ изменений")
 	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
 	//flag.StringVar (&strForRepl, "replace", strForRepl, "Строка для замены по grep фильтру")
