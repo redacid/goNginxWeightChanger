@@ -1,8 +1,8 @@
 {
   "backendServers": [
     {
-      "name": "back1",
-      "ip": "11.11.11.11",
+      "name": "tback1",
+      "ip": "192.168.4.20",
       "sshPort": 22,
       "priority": 1,
       "defaultWeight": 50,
@@ -10,8 +10,8 @@
       "disable":1
     },
     {
-      "name": "back3",
-      "ip": "33.33.33.33",
+      "name": "tback3",
+      "ip": "192.168.4.21",
       "sshPort": 22,
       "priority": 2,
       "defaultWeight": 40,
@@ -19,8 +19,8 @@
       "disable":0
     },
     {
-      "name": "back4",
-      "ip": "44.44.44.44",
+      "name": "tback4",
+      "ip": "192.168.4.22",
       "sshPort": 22,
       "priority": 2,
       "defaultWeight": 40,
@@ -31,13 +31,19 @@
   "FrontendServers": [
     {
       "name": "test1",
-      "ip": "55.55.55.55",
+      "ip": "192.168.4.20",
       "sshPort": 22,
       "NginxConfFile": "/home/redacid/goNginxWeightChanger/nginx.conf"
     },
     {
       "name": "test2",
-      "ip": "66.66.66.66",
+      "ip": "192.168.4.21",
+      "sshPort": 22,
+      "NginxConfFile": "/home/redacid/goNginxWeightChanger/nginx.conf"
+    }
+    {
+      "name": "test3",
+      "ip": "192.168.4.22",
       "sshPort": 22,
       "NginxConfFile": "/home/redacid/goNginxWeightChanger/nginx.conf"
     }
