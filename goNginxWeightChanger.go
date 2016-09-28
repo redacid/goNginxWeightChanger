@@ -90,6 +90,7 @@ func main() {
 	if err != nil {
 		//fmt.Printf("%s\n","Ошибка чтения файла конфигурации")
 		log.Fatalf("Ошибка чтения файла конфигурации %v\n",err)
+
 	}
 
 	switch {
