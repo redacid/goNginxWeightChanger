@@ -25,7 +25,7 @@
       "priority": 2,
       "defaultWeight": 40,
       "lastWeight": 50,
-      "state":"enable"
+      "state":"up"
     }
   ],
   "FrontendServers": [
