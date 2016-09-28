@@ -79,7 +79,7 @@ func GetCpuLoad(host string) int {
 			}
 		}
 	}
-
+	fmt.Printf("Error: %v\n", err)
 
 	return sys+usr
 }
