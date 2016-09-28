@@ -39,10 +39,10 @@ var sys,usr int
 		for _, v := range cpu_sys.Variables {
 			switch v.Type {
 			default:
-				//fmt.Printf("Type: %d - Value: %v\n", host, v.Value)
+				fmt.Printf("Type: %d - Value: %v\n", host, v.Value)
 				sys = int(v.Value.(int))
 			case gosnmp.OctetString:
-				//log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
+				log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
 
 			}
 		}
@@ -52,10 +52,10 @@ var sys,usr int
 		for _, v := range cpu_usr.Variables {
 			switch v.Type {
 			default:
-				//fmt.Printf("Type: %d - Value: %v\n", host, v.Value)
+				fmt.Printf("Type: %d - Value: %v\n", host, v.Value)
 				usr = int(v.Value.(int))
 			case gosnmp.OctetString:
-			//log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
+			log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
 
 			}
 		}
