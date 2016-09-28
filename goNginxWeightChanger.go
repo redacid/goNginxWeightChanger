@@ -25,6 +25,7 @@ type Config struct {
 type BackendServer struct {
 	Name          string `json:"name"`
 	IP            string `json:"ip"`
+	Port       string `json:"port"`
 	SSHPort       int `json:"sshPort"`
 	Priority      int `json:"priority"`
 	DefaultWeight int `json:"defaultWeight"`
@@ -143,6 +144,7 @@ func main() {
 		for _, BServer := range config.BackendServers {
 			fmt.Printf("Name: %s\n", BServer.Name)
 			fmt.Printf("IP: %s\n", BServer.IP)
+			fmt.Printf("Port: %d\n", BServer.Port)
 			fmt.Printf("SSH Port: %d\n", BServer.SSHPort)
 			fmt.Printf("State: %s\n", BServer.State)
 			fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
@@ -191,7 +193,7 @@ func main() {
 				var sshcmd string
 
 				//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
-				fmt.Printf("%s-%s:%d cpu_load:%d\n", BServer.Name, BServer.IP, BServer.SSHPort, GetCpuLoad(BServer.Name))
+				fmt.Printf("%s-%s:%s cpu_load:%d\n", BServer.Name, BServer.IP, BServer.Port, GetCpuLoad(BServer.Name))
 
 				if BServer.State == "low" {
 					BackendServerNewWeight = 1
@@ -210,10 +212,10 @@ func main() {
 
 				}
 				fmt.Printf("%s", "-Применяем regexp к конфигу nginx\n")
-				NginxServerRegexp := "(server)(\\s+)(" + BServer.Name + ")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5).*(;)"
+				NginxServerRegexp := "(server)(\\s+)(" + BServer.Name + ":"+BServer.Port+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5).*(;)"
 				NginxServerLineCmd := "cat \"" + FServer.NginxConfFile + "\" | grep -P \"" + NginxServerRegexp + "\"| grep \"" + BServer.Name + "\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
 				NginxServerLine := executeCmd(NginxServerLineCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
-				NginxServerNewLine := "server " + BServer.Name + " weight=" + strconv.Itoa(BackendServerNewWeight) + " max_fails=1 fail_timeout=5 " + BackendStateFlag + ";"
+				NginxServerNewLine := "server " + BServer.Name + ":"+BServer.Port+" weight=" + strconv.Itoa(BackendServerNewWeight) + " max_fails=1 fail_timeout=5 " + BackendStateFlag + ";"
 
 				if writeWeightChanges == "yes" {
 					fmt.Printf("%s", "-Производим замену в конфиге Nginx\n")
