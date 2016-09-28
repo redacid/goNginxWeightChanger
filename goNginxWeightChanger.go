@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"flag"
-	"./myfu"
+	//"./myfu"
+	"./github.com/alouca/gosnmp"
 	"os"
 	"encoding/json"
 	"log"
@@ -12,6 +13,7 @@ import (
 	"io/ioutil"
 	"strings"
 	"strconv"
+
 )
 
 type Config struct {
@@ -41,6 +43,46 @@ type FrontendServer struct {
 //	NginxServerString string `json:"NginxServerString"`
 //}
 
+const mib_percent_cpu_sys string = ".1.3.6.1.4.1.2021.11.9.0"
+const mib_percent_cpu_usr string = ".1.3.6.1.4.1.2021.11.10.0"
+
+func GetCpuLoad(host string) int {
+	var sys,usr int
+
+	s, err := gosnmp.NewGoSNMP(host, "public", gosnmp.Version2c, 5)
+	if err != nil {
+		log.Fatal(err)
+	}
+	cpu_sys, err := s.Get(mib_percent_cpu_sys)
+	if err == nil {
+		for _, v := range cpu_sys.Variables {
+			switch v.Type {
+			default:
+				fmt.Printf("Type: %d - Value: %v\n", host, v.Value)
+				sys = int(v.Value.(int))
+			case gosnmp.OctetString:
+				log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
+
+			}
+		}
+	}
+	cpu_usr, err := s.Get(mib_percent_cpu_usr)
+	if err == nil {
+		for _, v := range cpu_usr.Variables {
+			switch v.Type {
+			default:
+				fmt.Printf("Type: %d - Value: %v\n", host, v.Value)
+				usr = int(v.Value.(int))
+			case gosnmp.OctetString:
+				log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
+
+			}
+		}
+	}
+
+
+	return sys+usr
+}
 
 var command string
 //var strForGrep string
@@ -149,12 +191,12 @@ func main() {
 				var sshcmd string
 
 				//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
-				fmt.Printf("%s-%s:%d cpu_load:%d\n", BServer.Name, BServer.IP, BServer.SSHPort, myfu.GetCpuLoad(BServer.Name))
+				fmt.Printf("%s-%s:%d cpu_load:%d\n", BServer.Name, BServer.IP, BServer.SSHPort, GetCpuLoad(BServer.Name))
 
 				if BServer.State == "low" {
 					BackendServerNewWeight = 1
 				} else {
-					BackendServerNewWeight = 100 - myfu.GetCpuLoad(BServer.Name)
+					BackendServerNewWeight = 100 - GetCpuLoad(BServer.Name)
 				}
 
 				if BServer.State == "backup" {
@@ -199,7 +241,7 @@ func main() {
 	case command == "snmpget":
 		for _, BServer := range config.BackendServers {
 
-			fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
+			fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,GetCpuLoad(BServer.Name))
 		}
 /*
 	case command == "round":
