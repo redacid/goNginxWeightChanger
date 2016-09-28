@@ -11,7 +11,7 @@
       "state":"down"
     },
     {
-      "name": "tback2:81",
+      "name": "tback2",
       "ip": "192.168.4.21",
       "port": "81",
       "sshPort": 22,
@@ -21,7 +21,7 @@
       "state":"backup"
     },
     {
-      "name": "tback3:81",
+      "name": "tback3",
       "ip": "192.168.4.22",
       "port": "81",
       "sshPort": 22,
