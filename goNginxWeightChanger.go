@@ -144,7 +144,7 @@ func main() {
 					ssh.PublicKeys(signer),
 				},
 			}
-			fmt.Printf("%s", "[\\e[1;31m\\]-------------------------------------- Backend Servers -------------------------------------[\\e[0m\\] \n")
+			fmt.Printf("%s", "\\[\\e[1;31m\\]-------------------------------------- Backend Servers -------------------------------------\\[\\e[0m\\] \n")
 			for _, BServer := range config.BackendServers {
 				var sshcmd string
 
