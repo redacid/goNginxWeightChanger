@@ -15,24 +15,24 @@ import (
 )
 
 type Config struct {
-	BackendServers []BackendServer
+	BackendServers  []BackendServer
 	FrontendServers []FrontendServer
-//	ConfigGlobal ConfigGlobal
+	//	ConfigGlobal ConfigGlobal
 }
 
 type BackendServer struct {
-	Name string `json:"name"`
-	IP string `json:"ip"`
-	SSHPort int `json:"sshPort"`
-	Priority int `json:"priority"`
+	Name          string `json:"name"`
+	IP            string `json:"ip"`
+	SSHPort       int `json:"sshPort"`
+	Priority      int `json:"priority"`
 	DefaultWeight int `json:"defaultWeight"`
-	LastWeight int `json:"lastWeight"`
-	State string `json:"state"`
+	LastWeight    int `json:"lastWeight"`
+	State         string `json:"state"`
 }
 type FrontendServer struct {
-	Name string `json:"name"`
-	IP string `json:"ip"`
-	SSHPort int `json:"sshPort"`
+	Name          string `json:"name"`
+	IP            string `json:"ip"`
+	SSHPort       int `json:"sshPort"`
 	NginxConfFile string `json:"NginxConfFile"`
 }
 
@@ -68,11 +68,10 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 
 }
 
-
 func init() {
 	//flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
 	flag.StringVar(&command, "c", command, "Комманда(showconfig,changeweight ...)")
-	flag.StringVar (&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Записать извенения веса(changeweight), \n в  противном случае только показ изменений")
+	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Записать извенения веса(changeweight), \n в  противном случае только показ изменений")
 	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
 	//flag.StringVar (&strForRepl, "replace", strForRepl, "Строка для замены по grep фильтру")
@@ -89,7 +88,7 @@ func main() {
 	err := decoder.Decode(&config)
 	if err != nil {
 		//fmt.Printf("%s\n","Ошибка чтения файла конфигурации")
-		log.Fatalf("Ошибка чтения файла конфигурации %v\n",err)
+		log.Fatalf("Ошибка чтения файла конфигурации %v\n", err)
 
 	}
 
@@ -98,33 +97,34 @@ func main() {
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
 
 	case command == "showconfig":
-		fmt.Printf("%s","Backend Servers --------------------------------------\n")
+		fmt.Printf("%s", "-------------------------------------- Backend Servers ------------------------------------- \n")
 		for _, BServer := range config.BackendServers {
-			fmt.Printf("Name: %s\n",BServer.Name)
-			fmt.Printf("IP: %s\n",BServer.IP)
-			fmt.Printf("SSH Port: %d\n",BServer.SSHPort)
-			fmt.Printf("State: %s\n",BServer.State)
-
+			fmt.Printf("Name: %s\n", BServer.Name)
+			fmt.Printf("IP: %s\n", BServer.IP)
+			fmt.Printf("SSH Port: %d\n", BServer.SSHPort)
+			fmt.Printf("State: %s\n", BServer.State)
+			fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			//fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
 		}
-		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
+		fmt.Printf("%s", "-------------------------------------- Frontend Servers -------------------------------------\n")
 		for _, FServer := range config.FrontendServers {
-			fmt.Printf("Name: %s\n",FServer.Name)
-			fmt.Printf("IP: %s\n",FServer.IP)
-			fmt.Printf("SSH Port: %d\n",FServer.SSHPort)
-			fmt.Printf("Nginx config file: %s\n",FServer.NginxConfFile)
+			fmt.Printf("Name: %s\n", FServer.Name)
+			fmt.Printf("IP: %s\n", FServer.IP)
+			fmt.Printf("SSH Port: %d\n", FServer.SSHPort)
+			fmt.Printf("Nginx config file: %s\n", FServer.NginxConfFile)
+			fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 		}
-		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
-		//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
+	//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
+	//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
 
 
 	case command == "changeweight":
 		var BackendServerNewWeight int
 		var BackendStateFlag string
 
-		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
+		fmt.Printf("%s", "-------------------------------------- Frontend Servers -------------------------------------\n")
 		for _, FServer := range config.FrontendServers {
-			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
+			fmt.Printf("%s-%s:%d (%s)\n", FServer.Name, FServer.IP, FServer.SSHPort, FServer.NginxConfFile)
 
 			pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
 			if err != nil {
@@ -144,17 +144,17 @@ func main() {
 					ssh.PublicKeys(signer),
 				},
 			}
-			fmt.Printf("%s","Backend Servers --------------------------------------\n")
+			fmt.Printf("%s", "-------------------------------------- Backend Servers ------------------------------------- \n")
 			for _, BServer := range config.BackendServers {
 				var sshcmd string
 
 				//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
-				fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
+				fmt.Printf("%s-%s:%d cpu_load:%d\n", BServer.Name, BServer.IP, BServer.SSHPort, myfu.GetCpuLoad(BServer.Name))
 
 				if BServer.State == "low" {
 					BackendServerNewWeight = 1
 				} else {
-					BackendServerNewWeight = 100-myfu.GetCpuLoad(BServer.Name)
+					BackendServerNewWeight = 100 - myfu.GetCpuLoad(BServer.Name)
 				}
 
 				if BServer.State == "backup" {
@@ -167,28 +167,32 @@ func main() {
 					BackendStateFlag = ""
 
 				}
-
-				NginxServerRegexp := "(server)(\\s+)("+BServer.Name+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5).*(;)"
-				NginxServerLineCmd := "cat \""+FServer.NginxConfFile+"\" | grep -P \""+NginxServerRegexp+"\"| grep \""+BServer.Name+"\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
+				fmt.Printf("%s", "-Применяем regexp к конфигу nginx\n")
+				NginxServerRegexp := "(server)(\\s+)(" + BServer.Name + ")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5).*(;)"
+				NginxServerLineCmd := "cat \"" + FServer.NginxConfFile + "\" | grep -P \"" + NginxServerRegexp + "\"| grep \"" + BServer.Name + "\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
 				NginxServerLine := executeCmd(NginxServerLineCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
-				NginxServerNewLine := "server "+BServer.Name+" weight=" + strconv.Itoa(BackendServerNewWeight)+" max_fails=1 fail_timeout=5 "+BackendStateFlag+"; #"+BServer.Name+""
+				NginxServerNewLine := "server " + BServer.Name + " weight=" + strconv.Itoa(BackendServerNewWeight) + " max_fails=1 fail_timeout=5 " + BackendStateFlag + "; #" + BServer.Name + ""
 
 				if writeWeightChanges == "yes" {
-					sshcmd = "sed -i -e '/^[ \\t]*#/!s/"+ strings.TrimRight(NginxServerLine,"\r\n") +"/"+ NginxServerNewLine +"/g' "+FServer.NginxConfFile
+					fmt.Printf("%s", "-Производим замену в конфиге Nginx\n")
+					sshcmd = "sed -i -e '/^[ \\t]*#/!s/" + strings.TrimRight(NginxServerLine, "\r\n") + "/" + NginxServerNewLine + "/g' " + FServer.NginxConfFile
 				} else if writeWeightChanges == "no" {
-					sshcmd = "sed -e '/^[ \\t]*#/!s/"+ strings.TrimRight(NginxServerLine,"\r\n") +"/"+ NginxServerNewLine +"/g' "+FServer.NginxConfFile
+					fmt.Printf("%s", "-Выводим изменения в конфиге Nginx\n")
+					sshcmd = "sed -e '/^[ \\t]*#/!s/" + strings.TrimRight(NginxServerLine, "\r\n") + "/" + NginxServerNewLine + "/g' " + FServer.NginxConfFile
 				} else {
 					log.Fatal("Не определен параметр writeWeightChanges, введите -h для помощи")
 					os.Exit(1)
 				}
 
-				fmt.Printf("%s\n",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
+				fmt.Printf("%s\n", executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
+				fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			}
 			if writeWeightChanges == "yes" {
+				fmt.Printf("%s", "-Релоадим Nginx\n")
 				nginxReloadCmd := "/etc/init.d/nginx reload"
 				fmt.Printf("%s\n", executeCmd(nginxReloadCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 			} else {
-				fmt.Print("Done.\n")
+				fmt.Print("-Готово.\n")
 			}
 
 		}
