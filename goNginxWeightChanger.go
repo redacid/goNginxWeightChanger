@@ -132,7 +132,7 @@ func main() {
 		var BackendServerNewWeight int
 		var BackendStateFlag string
 
-		fmt.Printf("%s", CLR_G+"-------------------------------------- Frontend Servers -------------------------------------\n"+CLR_G)
+		fmt.Printf("%s", CLR_G+"-------------------------------------- Frontend Servers -------------------------------------"+CLR_G+"\n")
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("%s-%s:%d (%s)\n", FServer.Name, FServer.IP, FServer.SSHPort, FServer.NginxConfFile)
 
@@ -154,7 +154,7 @@ func main() {
 					ssh.PublicKeys(signer),
 				},
 			}
-			fmt.Printf("%s", "\033[31m-------------------------------------- Backend Servers -------------------------------------\033[39m \n")
+			fmt.Printf("%s", CLR_R+"-------------------------------------- Backend Servers -------------------------------------"+CLR_R+"\n")
 			for _, BServer := range config.BackendServers {
 				var sshcmd string
 
