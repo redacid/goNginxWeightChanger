@@ -243,7 +243,7 @@ func main() {
 	case command == "snmpget":
 		for _, BServer := range config.BackendServers {
 
-			fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,GetCpuLoad(BServer.Name))
+			fmt.Printf("%s(%s):%s cpu_load:%d\n",BServer.Name,BServer.IP,BServer.Port,GetCpuLoad(BServer.Name))
 		}
 /*
 	case command == "round":
