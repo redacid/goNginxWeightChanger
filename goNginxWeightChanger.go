@@ -120,13 +120,13 @@ func main() {
 
 			pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
 			if err != nil {
-				log.Fatalf("unable to read private key: %v", err)
+				log.Fatalf("Не могу прочитать приватный ключ: %v", err)
 			}
 
 			// Create the Signer for this private key.
 			signer, err := ssh.ParsePrivateKey(pkey)
 			if err != nil {
-				log.Fatalf("unable to parse private key: %v", err)
+				log.Fatalf("Не могу распарсить приватный ключ: %v", err)
 			}
 
 			sshConfig := &ssh.ClientConfig{
@@ -171,7 +171,7 @@ func main() {
 				} else if writeWeightChanges == "no" {
 					sshcmd = "sed -e '/^[ \\t]*#/!s/"+ strings.TrimRight(NginxServerLine,"\r\n") +"/"+ NginxServerNewLine +"/g' "+FServer.NginxConfFile
 				} else {
-					log.Fatalf("Не определен параметр writeWeightChanges, введите -h для помощи %v",nil)
+					log.Fatal("Не определен параметр writeWeightChanges, введите -h для помощи")
 					os.Exit(1)
 				}
 
