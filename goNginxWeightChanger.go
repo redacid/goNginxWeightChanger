@@ -107,7 +107,7 @@ func main() {
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
 
 	case command == "showconfig":
-		fmt.Printf("%s", "-------------------------------------- Backend Servers ------------------------------------- \n")
+		fmt.Printf("%s", CLR_R+"-------------------------------------- Backend Servers ------------------------------------- "+CLR_R+"\n")
 		for _, BServer := range config.BackendServers {
 			fmt.Printf("Name: %s\n", BServer.Name)
 			fmt.Printf("IP: %s\n", BServer.IP)
@@ -116,7 +116,7 @@ func main() {
 			fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			//fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
 		}
-		fmt.Printf("%s", "-------------------------------------- Frontend Servers -------------------------------------\n")
+		fmt.Printf("%s", CLR_G+"-------------------------------------- Frontend Servers -------------------------------------"+CLR_G+"\n")
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("Name: %s\n", FServer.Name)
 			fmt.Printf("IP: %s\n", FServer.IP)
