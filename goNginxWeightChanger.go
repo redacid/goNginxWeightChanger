@@ -177,8 +177,12 @@ func main() {
 
 				fmt.Printf("%s\n",executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 			}
+			if writeWeightChanges == "yes" {
 				nginxReloadCmd := "/etc/init.d/nginx reload"
-			fmt.Printf("%s\n",executeCmd(nginxReloadCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
+				fmt.Printf("%s\n", executeCmd(nginxReloadCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
+			} else {
+				fmt.Print("Done.\n")
+			}
 
 		}
 	/*case command == "snmpget":
