@@ -196,12 +196,12 @@ func main() {
 			}
 
 		}
-	/*case command == "snmpget":
+	case command == "snmpget":
 		for _, BServer := range config.BackendServers {
 
 			fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
 		}
-
+/*
 	case command == "round":
 		fmt.Printf("%d", myfu.Round(floatForRound))
 
@@ -214,6 +214,6 @@ func main() {
 		// ./goNginxWeightChanger -c replace -grep="(server)(\s+)(back4)(\s+)(weight)(=)(\d+)(\s+)(max_fails)(=)(\d+)(\s+)(fail_timeout)(=)(5)(;)" -replace "sdfsdfsdf" -grepfile="nginx.conf"
 		myfu.Replace(strForGrep,strForRepl,fileForGrep)
 
-	*/
+*/
 	}
 }
