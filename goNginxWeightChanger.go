@@ -198,6 +198,7 @@ func main() {
 				if BServer.State == "low" {
 					BackendServerNewWeight = 1
 				} else {
+					//Нужно продумать формулу
 					BackendServerNewWeight = 100 - GetCpuLoad(BServer.Name)
 				}
 
@@ -207,6 +208,9 @@ func main() {
 				} else if BServer.State == "down" {
 					BackendStateFlag = "down"
 
+				} else if BServer.State == "dynamic" {
+					BackendStateFlag = ""
+					//Нужно реализовать. Бэкэнд должен быть в бакапе пока нет нагрузки на остальные
 				} else {
 					BackendStateFlag = ""
 
