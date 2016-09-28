@@ -215,7 +215,7 @@ func main() {
 					BackendStateFlag = ""
 
 				}
-				fmt.Printf("%s", "-Применяем regexp к конфигу nginx\n")
+				fmt.Printf("%s", "- Применяем regexp к конфигу nginx\n")
 				NginxServerRegexp := "(server)(\\s+)(" + BServer.Name + ":"+BServer.Port+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5).*(;)"
 				NginxServerLineCmd := "cat \"" + FServer.NginxConfFile + "\" | grep -P \"" + NginxServerRegexp + "\"| grep \"" + BServer.Name + "\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
 				NginxServerLine := executeCmd(NginxServerLineCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
@@ -236,11 +236,11 @@ func main() {
 				fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			}
 			if writeWeightChanges == "yes" {
-				fmt.Printf("%s", "-Релоадим Nginx\n")
+				fmt.Printf("%s", "- Релоадим Nginx\n")
 				//nginxReloadCmd := "/etc/init.d/nginx reload"
 				//fmt.Printf("%s\n", executeCmd(nginxReloadCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 			} else {
-				fmt.Print("-Готово.\n")
+				fmt.Print("- Готово.\n")
 			}
 
 		}
