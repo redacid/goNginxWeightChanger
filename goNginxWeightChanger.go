@@ -100,12 +100,19 @@ func main() {
 	case command == "showconfig":
 		fmt.Printf("%s","Backend Servers --------------------------------------\n")
 		for _, BServer := range config.BackendServers {
-			fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
+			fmt.Printf("Name: %s\n",BServer.Name)
+			fmt.Printf("IP: %s\n",BServer.IP)
+			fmt.Printf("SSH Port: %d\n",BServer.SSHPort)
+			fmt.Printf("State: %s\n",BServer.State)
+
 			//fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
 		}
 		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
 		for _, FServer := range config.FrontendServers {
-			fmt.Printf("%s-%s:%d (%s)\n",FServer.Name,FServer.IP,FServer.SSHPort,FServer.NginxConfFile)
+			fmt.Printf("Name: %s\n",FServer.Name)
+			fmt.Printf("IP: %s\n",FServer.IP)
+			fmt.Printf("SSH Port: %d\n",FServer.SSHPort)
+			fmt.Printf("Nginx config file: %s\n",FServer.NginxConfFile)
 		}
 		//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
 		//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
@@ -160,7 +167,6 @@ func main() {
 					BackendStateFlag = ""
 
 				}
-
 
 				NginxServerRegexp := "(server)(\\s+)("+BServer.Name+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5).*(;)"
 				NginxServerLineCmd := "cat \""+FServer.NginxConfFile+"\" | grep -P \""+NginxServerRegexp+"\"| grep \""+BServer.Name+"\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
