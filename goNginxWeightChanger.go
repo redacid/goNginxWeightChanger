@@ -112,7 +112,7 @@ func main() {
 
 	case command == "changeweight":
 		var BackendServerNewWeight int
-		var BackendBackupFlag string
+		var BackendStateFlag string
 
 		fmt.Printf("%s","Frontend Servers -------------------------------------\n")
 		for _, FServer := range config.FrontendServers {
@@ -143,16 +143,20 @@ func main() {
 				//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
 				fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
 
-				if BServer.State == "disable" {
+				if BServer.State == "low" {
 					BackendServerNewWeight = 1
 				} else {
 					BackendServerNewWeight = 100-myfu.GetCpuLoad(BServer.Name)
 				}
+
 				if BServer.State == "backup" {
-					BackendBackupFlag = "backup"
+					BackendStateFlag = "backup"
+
+				} else if BServer.State == "down" {
+					BackendStateFlag = "down"
 
 				} else {
-					BackendBackupFlag = ""
+					BackendStateFlag = ""
 
 				}
 
@@ -160,7 +164,7 @@ func main() {
 				NginxServerRegexp := "(server)(\\s+)("+BServer.Name+")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5).*(;)"
 				NginxServerLineCmd := "cat \""+FServer.NginxConfFile+"\" | grep -P \""+NginxServerRegexp+"\"| grep \""+BServer.Name+"\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
 				NginxServerLine := executeCmd(NginxServerLineCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
-				NginxServerNewLine := "server "+BServer.Name+" weight=" + strconv.Itoa(BackendServerNewWeight)+" max_fails=1 fail_timeout=5 "+BackendBackupFlag+"; #"+BServer.Name+""
+				NginxServerNewLine := "server "+BServer.Name+" weight=" + strconv.Itoa(BackendServerNewWeight)+" max_fails=1 fail_timeout=5 "+BackendStateFlag+"; #"+BServer.Name+""
 
 				if writeWeightChanges == "yes" {
 					sshcmd = "sed -i -e '/^[ \\t]*#/!s/"+ strings.TrimRight(NginxServerLine,"\r\n") +"/"+ NginxServerNewLine +"/g' "+FServer.NginxConfFile
