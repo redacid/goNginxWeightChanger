@@ -14,16 +14,6 @@ import (
 	"strconv"
 )
 
-const CLR_0 = "\x1b[30;1m"
-const CLR_R = "\x1b[31;1m"
-const CLR_G = "\x1b[32;1m"
-const CLR_Y = "\x1b[33;1m"
-const CLR_B = "\x1b[34;1m"
-const CLR_M = "\x1b[35;1m"
-const CLR_C = "\x1b[36;1m"
-const CLR_W = "\x1b[37;1m"
-const CLR_N = "\x1b[0m"
-
 type Config struct {
 	BackendServers  []BackendServer
 	FrontendServers []FrontendServer
@@ -107,7 +97,7 @@ func main() {
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
 
 	case command == "showconfig":
-		fmt.Printf("%s", CLR_R+"-------------------------------------- Backend Servers ------------------------------------- "+CLR_R+"\n")
+		fmt.Printf("%s", "-------------------------------------- Backend Servers -------------------------------------\n")
 		for _, BServer := range config.BackendServers {
 			fmt.Printf("Name: %s\n", BServer.Name)
 			fmt.Printf("IP: %s\n", BServer.IP)
@@ -116,7 +106,7 @@ func main() {
 			fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			//fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
 		}
-		fmt.Printf("%s", CLR_G+"-------------------------------------- Frontend Servers -------------------------------------"+CLR_G+"\n")
+		fmt.Printf("%s", "-------------------------------------- Frontend Servers -------------------------------------\n")
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("Name: %s\n", FServer.Name)
 			fmt.Printf("IP: %s\n", FServer.IP)
@@ -132,7 +122,7 @@ func main() {
 		var BackendServerNewWeight int
 		var BackendStateFlag string
 
-		fmt.Printf("%s", CLR_G+"-------------------------------------- Frontend Servers -------------------------------------"+CLR_G+"\n")
+		fmt.Printf("%s", "-------------------------------------- Frontend Servers -------------------------------------\n")
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("%s-%s:%d (%s)\n", FServer.Name, FServer.IP, FServer.SSHPort, FServer.NginxConfFile)
 
@@ -154,7 +144,7 @@ func main() {
 					ssh.PublicKeys(signer),
 				},
 			}
-			fmt.Printf("%s", CLR_R+"-------------------------------------- Backend Servers -------------------------------------"+CLR_R+"\n")
+			fmt.Printf("%s", "-------------------------------------- Backend Servers -------------------------------------\n")
 			for _, BServer := range config.BackendServers {
 				var sshcmd string
 
