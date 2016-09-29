@@ -237,10 +237,10 @@ func main() {
 				NginxServerNewLine := "server " + BServer.Name + " weight=" + strconv.Itoa(BackendServerNewWeight) + " max_fails=1 fail_timeout=5 " + BackendStateFlag + ";"
 
 				if writeWeightChanges == "yes" {
-					fmt.Printf("%s", "-Производим замену в конфиге Nginx\n")
+					fmt.Printf("%s", "- Производим замену в конфиге Nginx\n")
 					sshcmd = "sed -i -e '/^[ \\t]*#/!s/" + strings.TrimRight(NginxServerLine, "\r\n") + "/" + NginxServerNewLine + "/g' " + FServer.NginxConfFile
 				} else if writeWeightChanges == "no" {
-					fmt.Printf("%s", "-Выводим изменения в конфиге Nginx\n")
+					fmt.Printf("%s", "- Выводим изменения в конфиге Nginx\n")
 					sshcmd = "sed -e '/^[ \\t]*#/!s/" + strings.TrimRight(NginxServerLine, "\r\n") + "/" + NginxServerNewLine + "/g' " + FServer.NginxConfFile
 				} else {
 					log.Fatal("Не определен параметр writeWeightChanges, введите -h для помощи")
