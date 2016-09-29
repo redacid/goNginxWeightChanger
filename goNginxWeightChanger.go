@@ -52,8 +52,9 @@ func GetCpuLoad(host string) int {
 
 	if strings.Contains(host,":") {
 		LastDots := strings.LastIndex(host, ":")
-		host := host[:LastDots]
-		fmt.Printf("!!!!!!!!! %s\n", host)
+		newhost := host[:LastDots]
+		fmt.Printf("!!!!!!!!! %s\n", newhost)
+		host = newhost
 	}
 
 	fmt.Printf("+++++++ %s\n", host)
