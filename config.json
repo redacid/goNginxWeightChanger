@@ -3,7 +3,6 @@
     {
       "name": "tback1",
       "ip": "192.168.4.20",
-      "port": "81",
       "sshPort": 22,
       "priority": 1,
       "defaultWeight": 50,
@@ -13,7 +12,6 @@
     {
       "name": "tback2",
       "ip": "192.168.4.21",
-      "port": "81",
       "sshPort": 22,
       "priority": 2,
       "defaultWeight": 40,
@@ -23,7 +21,6 @@
     {
       "name": "tback3",
       "ip": "192.168.4.22",
-      "port": "81",
       "sshPort": 22,
       "priority": 2,
       "defaultWeight": 40,
