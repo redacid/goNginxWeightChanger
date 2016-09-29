@@ -230,9 +230,10 @@ func main() {
 							BackendUpSeversCount = BackendUpSeversCount+1
 						}
 
-						fmt.Printf("---%s -%d\n",BDServer.Name, BackendUpSeversCount)
+
 
 					}
+					fmt.Printf("--- Up Servers -%d\n", BackendUpSeversCount)
 
 				} else {
 					BackendStateFlag = ""
