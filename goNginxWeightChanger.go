@@ -223,6 +223,9 @@ func main() {
 				} else if BServer.State == "dynamic" {
 					BackendStateFlag = ""
 					//Нужно реализовать. Бэкэнд должен быть в бакапе пока нет нагрузки на остальные
+					for _, BDServer := range config.BackendServers {
+						fmt.Printf("Ss",BDServer.Name)
+					}
 				} else {
 					BackendStateFlag = ""
 

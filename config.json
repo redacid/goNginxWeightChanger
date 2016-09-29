@@ -1,25 +1,25 @@
 {
   "backendServers": [
     {
-      "name": "tback1",
+      "name": "tback1:81",
       "ip": "192.168.4.20",
       "sshPort": 22,
       "priority": 1,
       "defaultWeight": 50,
       "lastWeight": 60,
-      "state":"down"
+      "state":"dynamic"
     },
     {
-      "name": "tback2",
+      "name": "tback2:81",
       "ip": "192.168.4.21",
       "sshPort": 22,
       "priority": 2,
       "defaultWeight": 40,
       "lastWeight": 50,
-      "state":"backup"
+      "state":"up"
     },
     {
-      "name": "tback3",
+      "name": "tback3:81",
       "ip": "192.168.4.22",
       "sshPort": 22,
       "priority": 2,
