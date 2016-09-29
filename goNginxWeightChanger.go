@@ -133,7 +133,7 @@ func init() {
 						"execOnFrontends(need -execCmd <cmd>)\n ")
 
 	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Записать изменения веса(-c changeweight), в  противном случае только показ изменений\\n")
-	flag.StringVar(&execCmd, "execCmd", execCmd, "Выполнить комманду на серверах( -c execOnFrontends)\\n")
+	flag.StringVar(&execCmd, "execCmd", execCmd, "Выполнить комманду на серверах( -c execOnFrontends or execOnBackends)\\n")
 
 	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
