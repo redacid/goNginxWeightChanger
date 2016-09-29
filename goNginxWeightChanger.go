@@ -314,8 +314,8 @@ func main() {
 			}
 
 
-			fmt.Printf("%s# %s %s %d\n",BServer.Name, execCmd, host, BServer.SSHPort)
-			//fmt.Printf("%s# %s\n",BServer.Name, executeCmd(execCmd, BServer.Name + ":" + strconv.Itoa(BServer.SSHPort), sshConfig))
+			//fmt.Printf("%s# %s %s %d\n",BServer.Name, execCmd, host, BServer.SSHPort)
+			fmt.Printf("%s# %s\n",BServer.Name, executeCmd(execCmd, host + ":" + strconv.Itoa(BServer.SSHPort), sshConfig))
 		}
 /*
 	case command == "round":
