@@ -180,7 +180,7 @@ func main() {
 
 		color.Green("Frontend Servers")
 		for _, FServer := range config.FrontendServers {
-			fmt.Printf("%s-%s:%d (%s)\n", FServer.Name, FServer.IP, FServer.SSHPort, FServer.NginxConfFile)
+			fmt.Printf("Server: %s-%s:%d (%s)\n", FServer.Name, FServer.IP, FServer.SSHPort, FServer.NginxConfFile)
 
 			pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
 			if err != nil {
