@@ -128,10 +128,10 @@ func init() {
 	//flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
 	flag.StringVar(&command, "c", command, "" +
 						"Commands:\n " +
-						"showconfig\n " +
-						"changeweight\n " +
-						"execOnBackends(need -execCmd <cmd>)\n "+
-						"execOnFrontends(need -execCmd <cmd>)\n ")
+						"\t\t showconfig\n " +
+						"\t\t changeweight\n " +
+						"\t\t execOnBackends(need -execCmd <cmd>)\n "+
+						"\t\t execOnFrontends(need -execCmd <cmd>)\n ")
 
 	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Write weight changes ( need by -c changeweight) or only present changes\\n")
 	flag.StringVar(&execCmd, "execCmd", execCmd, "Exec command on servers(need by -c execOnFrontends or execOnBackends)\\n")
