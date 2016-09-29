@@ -229,7 +229,7 @@ func main() {
 					for _, BDServer := range config.BackendServers {
 						if BDServer.State == "up" {
 							BackendUpSeversCount = BackendUpSeversCount+1
-							BackendUpSeversSummaryLoad = BackendUpSeversSummaryLoad+GetCpuLoad(BServer.Name)
+							BackendUpSeversSummaryLoad = BackendUpSeversSummaryLoad+GetCpuLoad(BDServer.Name)
 						}
 
 
