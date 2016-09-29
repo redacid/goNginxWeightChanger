@@ -50,11 +50,13 @@ const mib_percent_cpu_usr string = ".1.3.6.1.4.1.2021.11.10.0"
 func GetCpuLoad(host string) int {
 	var sys,usr int
 
-	LastDots := strings.LastIndex(host, ":")
-	hostname := host[:LastDots]
-	port := host[LastDots+1:]
+	if strings.Contains(host,":") {
+		LastDots := strings.LastIndex(host, ":")
+		host := host[:LastDots]
+		fmt.Printf("!!!!!!!!! %s\n", host)
+	}
 
-	fmt.Printf("!!!!!!!!! %s:%s\n", hostname, port)
+	fmt.Printf("+++++++ %s\n", host)
 
 	s, err := gosnmp.NewGoSNMP(host, "public", gosnmp.Version2c, 5)
 	if err != nil {
