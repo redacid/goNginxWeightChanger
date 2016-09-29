@@ -200,15 +200,12 @@ func main() {
 					ssh.PublicKeys(signer),
 				},
 			}
-			color.Red("Backend Servers")
+
 			for _, BServer := range config.BackendServers {
 				var sshcmd string
 
 				//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
-				fmt.Printf("%s(%s) cpu_load:%d\n", BServer.Name, BServer.IP, GetCpuLoad(BServer.Name))
-
-
-
+				color.Red("Backend Server "+BServer.Name+"("+BServer.IP+") cpu_load:"+GetCpuLoad(BServer.Name) )
 
 				if BServer.State == "low" {
 					BackendServerNewWeight = 1
