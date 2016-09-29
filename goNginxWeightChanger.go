@@ -152,7 +152,7 @@ func main() {
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
 
 	case command == "showconfig":
-		color.Cyan("-------------------------------------- Backend Servers -------------------------------------\n")
+		color.Red("-------------------------------------- Backend Servers -------------------------------------")
 		for _, BServer := range config.BackendServers {
 			fmt.Printf("Name: %s\n", BServer.Name)
 			fmt.Printf("IP: %s\n", BServer.IP)
@@ -162,7 +162,7 @@ func main() {
 			fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			//fmt.Printf("%s-%s:%d cpu_load:%d\n",BServer.Name,BServer.IP,BServer.SSHPort,myfu.GetCpuLoad(BServer.Name))
 		}
-		fmt.Printf("%s", "-------------------------------------- Frontend Servers -------------------------------------\n")
+		color.Green("-------------------------------------- Frontend Servers -------------------------------------")
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("Name: %s\n", FServer.Name)
 			fmt.Printf("IP: %s\n", FServer.IP)
