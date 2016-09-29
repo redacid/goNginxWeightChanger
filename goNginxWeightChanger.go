@@ -236,7 +236,7 @@ func main() {
 
 					}
 					fmt.Printf("--- Up Servers(%d): %d\n",BackendUpSeversSummaryLoad, BackendUpSeversCount)
-					BackendUpSeversSummaryLoad = 0
+					//BackendUpSeversSummaryLoad = 0
 
 				} else {
 					BackendStateFlag = ""
