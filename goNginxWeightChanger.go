@@ -301,6 +301,7 @@ func main() {
 
 	case command == "execOnBackends":
 		for _, BServer := range config.BackendServers {
+			var host string
 			execCmd := execCommand
 
 			if strings.Contains(BServer.Name,":") {
@@ -308,7 +309,10 @@ func main() {
 				newhost := BServer.Name[:LastDots]
 				//fmt.Printf("!!!!!!!!! %s\n", newhost)
 				host = newhost
+			} else {
+				host = BServer.Name
 			}
+
 
 			fmt.Printf("%s# %s %s %d\n",BServer.Name, execCmd, host, BServer.SSHPort)
 			//fmt.Printf("%s# %s\n",BServer.Name, executeCmd(execCmd, BServer.Name + ":" + strconv.Itoa(BServer.SSHPort), sshConfig))
