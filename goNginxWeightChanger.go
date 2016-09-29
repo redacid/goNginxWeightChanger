@@ -102,7 +102,7 @@ var command string
 //var strForRepl string
 //var fileForGrep string
 var writeWeightChanges string
-var execCmd string
+var execCommand string
 //var floatForRound float64
 
 
@@ -130,11 +130,11 @@ func init() {
 						"Commands:\n " +
 						"\t\t showconfig\n " +
 						"\t\t changeweight\n " +
-						"\t\t execOnBackends(need -execCmd <cmd>)\n "+
-						"\t\t execOnFrontends(need -execCmd <cmd>)\n ")
+						"\t\t execOnBackends(need -execCommand <cmd>)\n "+
+						"\t\t execOnFrontends(need -execCommand <cmd>)\n ")
 
 	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Write weight changes ( need by -c changeweight) or only present changes\n")
-	flag.StringVar(&execCmd, "execCmd", execCmd, "Exec command on servers(need by -c execOnFrontends or execOnBackends)\n")
+	flag.StringVar(&execCommand, "execCommand", execCommand, "Exec command on servers(need by -c execOnFrontends or execOnBackends)\n")
 
 	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
@@ -295,14 +295,22 @@ func main() {
 		}
 	case command == "execOnFrontends":
 		for _, FServer := range config.FrontendServers {
-			execCmd := execCmd
+			execCmd := execCommand
 			fmt.Printf("%s# %s\n",FServer.Name, executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 		}
 
 	case command == "execOnBackends":
 		for _, BServer := range config.BackendServers {
-			execCmd := execCmd
-			fmt.Printf("%s# %s %s %d\n",BServer.Name, execCmd, BServer.Name, BServer.SSHPort)
+			execCmd := execCommand
+
+			if strings.Contains(BServer.Name,":") {
+				LastDots := strings.LastIndex(BServer.Name, ":")
+				newhost := BServer.Name[:LastDots]
+				//fmt.Printf("!!!!!!!!! %s\n", newhost)
+				host = newhost
+			}
+
+			fmt.Printf("%s# %s %s %d\n",BServer.Name, execCmd, host, BServer.SSHPort)
 			//fmt.Printf("%s# %s\n",BServer.Name, executeCmd(execCmd, BServer.Name + ":" + strconv.Itoa(BServer.SSHPort), sshConfig))
 		}
 /*
