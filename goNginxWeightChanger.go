@@ -235,8 +235,11 @@ func main() {
 
 
 					}
-					fmt.Printf("--- Up Servers(%d): %d\n",BackendUpSeversSummaryLoad, BackendUpSeversCount)
-					//BackendUpSeversSummaryLoad = 0
+					//fmt.Printf("--- Up Servers(%d): %d\n",BackendUpSeversSummaryLoad, BackendUpSeversCount)
+					AvgUpServersLoad := BackendUpSeversSummaryLoad/BackendUpSeversCount
+					fmt.Printf("--- Up Servers (AvgLoad: %d): %d\n",AvgUpServersLoad, BackendUpSeversCount)
+
+
 
 				} else {
 					BackendStateFlag = ""
