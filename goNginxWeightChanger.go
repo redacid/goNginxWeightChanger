@@ -133,8 +133,8 @@ func init() {
 						"\t\t execOnBackends(need -execCmd <cmd>)\n "+
 						"\t\t execOnFrontends(need -execCmd <cmd>)\n ")
 
-	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Write weight changes ( need by -c changeweight) or only present changes\\n")
-	flag.StringVar(&execCmd, "execCmd", execCmd, "Exec command on servers(need by -c execOnFrontends or execOnBackends)\\n")
+	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Write weight changes ( need by -c changeweight) or only present changes\n")
+	flag.StringVar(&execCmd, "execCmd", execCmd, "Exec command on servers(need by -c execOnFrontends or execOnBackends)\n")
 
 	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
@@ -302,7 +302,8 @@ func main() {
 	case command == "execOnBackends":
 		for _, BServer := range config.BackendServers {
 			execCmd := execCmd
-			fmt.Printf("%s# %s\n",BServer.Name, executeCmd(execCmd, BServer.Name + ":" + strconv.Itoa(BServer.SSHPort), sshConfig))
+			fmt.Printf("%s# %s %s %d\n",BServer.Name, execCmd, BServer.Name, BServer.SSHPort)
+			//fmt.Printf("%s# %s\n",BServer.Name, executeCmd(execCmd, BServer.Name + ":" + strconv.Itoa(BServer.SSHPort), sshConfig))
 		}
 /*
 	case command == "round":
