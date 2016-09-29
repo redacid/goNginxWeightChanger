@@ -226,7 +226,7 @@ func main() {
 					BackendStateFlag = ""
 					//Нужно реализовать. Бэкэнд должен быть в бакапе пока нет нагрузки на остальные
 					for _, BDServer := range config.BackendServers {
-						if BDServer.State == "enable" {
+						if BDServer.State == "up" {
 							BackendUpSeversCount = BackendUpSeversCount+1
 						}
 
