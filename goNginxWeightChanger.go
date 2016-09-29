@@ -200,7 +200,7 @@ func main() {
 					ssh.PublicKeys(signer),
 				},
 			}
-			color.Red("----------------------------------------------------")
+			//color.Red("----------------------------------------------------")
 			for _, BServer := range config.BackendServers {
 				var sshcmd string
 
@@ -248,11 +248,11 @@ func main() {
 				//fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			}
 			if writeWeightChanges == "yes" {
-				fmt.Printf("%s", "- Релоадим Nginx\n")
+				fmt.Printf("%s", "- Релоадим Nginx\n\n")
 				//nginxReloadCmd := "/etc/init.d/nginx reload"
 				//fmt.Printf("%s\n", executeCmd(nginxReloadCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 			} else {
-				fmt.Print("- Готово.\n")
+				fmt.Print("- Готово.\n\n")
 			}
 
 		}
