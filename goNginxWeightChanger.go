@@ -267,6 +267,7 @@ func main() {
 				if writeWeightChanges == "yes" {
 					fmt.Printf("%s", "- Производим замену в конфиге Nginx\n")
 					sshcmd = "sed -i -e '/^[ \\t]*#/!s/" + strings.TrimRight(NginxServerLine, "\r\n") + "/" + NginxServerNewLine + "/g' " + FServer.NginxConfFile
+
 				} else if writeWeightChanges == "no" {
 					fmt.Printf("%s", "- Выводим изменения в конфиге Nginx\n")
 					sshcmd = "sed -e '/^[ \\t]*#/!s/" + strings.TrimRight(NginxServerLine, "\r\n") + "/" + NginxServerNewLine + "/g' " + FServer.NginxConfFile
@@ -274,7 +275,7 @@ func main() {
 					log.Fatal("Не определен параметр writeWeightChanges, введите -h для помощи")
 					os.Exit(1)
 				}
-
+				color.Cyan("New Weight is "+strconv.Itoa(BackendServerNewWeight))
 				fmt.Printf("%s\n", executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 				//fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			}
