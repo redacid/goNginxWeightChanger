@@ -222,7 +222,7 @@ func main() {
 					BackendStateFlag = "down"
 
 				} else if BServer.State == "dynamic" {
-					var BackendUpSeversCount int 0
+					var BackendUpSeversCount int=0
 					BackendStateFlag = ""
 					//Нужно реализовать. Бэкэнд должен быть в бакапе пока нет нагрузки на остальные
 					for _, BDServer := range config.BackendServers {
