@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"log"
 	"bytes"
-	"github.com/golang/crypto/ssh"
+	"golang.org/x/crypto/ssh"
 	//"./github.com/redacid/crypto/ssh"
 	"github.com/fatih/color"
 	"io/ioutil"
