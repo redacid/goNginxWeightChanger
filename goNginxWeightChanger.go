@@ -4,16 +4,18 @@ import (
 	"fmt"
 	"flag"
 	//"./myfu"
-	"./github.com/alouca/gosnmp"
+	"github.com/alouca/gosnmp"
 	"os"
 	"encoding/json"
 	"log"
 	"bytes"
-	"./github.com/redacid/crypto/ssh"
-	"./github.com/redacid/color"
+	"github.com/golang/crypto/ssh"
+	//"./github.com/redacid/crypto/ssh"
+	"github.com/fatih/color"
 	"io/ioutil"
 	"strings"
 	"strconv"
+
 
 )
 
