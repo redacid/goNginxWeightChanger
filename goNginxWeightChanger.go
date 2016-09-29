@@ -232,19 +232,17 @@ func main() {
 							BackendUpSeversSummaryLoad = BackendUpSeversSummaryLoad+GetCpuLoad(BDServer.Name)
 						}
 
-
-
 					}
 					//fmt.Printf("--- Up Servers(%d): %d\n",BackendUpSeversSummaryLoad, BackendUpSeversCount)
 					AvgUpServersLoad := BackendUpSeversSummaryLoad/BackendUpSeversCount
 					fmt.Printf("--- Up Servers (AvgLoad: %d): %d\n",AvgUpServersLoad, BackendUpSeversCount)
 					if AvgUpServersLoad > 50 {
 						BackendStateFlag = "up"
+
 					} else {
 						BackendStateFlag = "backup"
 					}
-
-
+					fmt.Printf("New Dynamic state is %s",BackendStateFlag)
 
 				} else {
 					BackendStateFlag = ""
