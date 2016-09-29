@@ -249,8 +249,8 @@ func main() {
 			}
 			if writeWeightChanges == "yes" {
 				fmt.Printf("%s", "- Релоадим Nginx\n\n")
-				//nginxReloadCmd := "/etc/init.d/nginx reload"
-				//fmt.Printf("%s\n", executeCmd(nginxReloadCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
+				nginxReloadCmd := "/etc/init.d/nginx reload"
+				fmt.Printf("%s\n", executeCmd(nginxReloadCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 			} else {
 				fmt.Print("- Готово.\n\n")
 			}
