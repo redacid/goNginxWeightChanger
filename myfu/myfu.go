@@ -5,7 +5,7 @@ import (
 	"os"
 	"bufio"
 	"fmt"
-	"../github.com/alouca/gosnmp"
+	"github.com/alouca/gosnmp"
 	"log"
 	"sync"
 	"strings"
