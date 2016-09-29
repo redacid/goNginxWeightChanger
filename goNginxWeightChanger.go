@@ -235,14 +235,14 @@ func main() {
 					}
 					//fmt.Printf("--- Up Servers(%d): %d\n",BackendUpSeversSummaryLoad, BackendUpSeversCount)
 					AvgUpServersLoad := BackendUpSeversSummaryLoad/BackendUpSeversCount
-					fmt.Printf("--- Up Servers (AvgLoad: %d): %d\n",AvgUpServersLoad, BackendUpSeversCount)
+					fmt.Printf("--- Up Servers(AvgLoad: %d) count: %d\n",AvgUpServersLoad, BackendUpSeversCount)
 					if AvgUpServersLoad > 50 {
 						BackendStateFlag = "up"
 
 					} else {
 						BackendStateFlag = "backup"
 					}
-					color.cyan("New Dynamic state is "+BackendStateFlag)
+					color.Cyan("New Dynamic state is "+BackendStateFlag)
 
 				} else {
 					BackendStateFlag = ""
