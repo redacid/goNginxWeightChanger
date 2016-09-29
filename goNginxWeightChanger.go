@@ -126,14 +126,15 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 
 func init() {
 	//flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
-	flag.StringVar(&command, "c", command, "Комманды:\n " +
+	flag.StringVar(&command, "c", command, "" +
+						"Commands:\n " +
 						"showconfig\n " +
 						"changeweight\n " +
 						"execOnBackends(need -execCmd <cmd>)\n "+
 						"execOnFrontends(need -execCmd <cmd>)\n ")
 
-	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Записать изменения веса(-c changeweight), в  противном случае только показ изменений\\n")
-	flag.StringVar(&execCmd, "execCmd", execCmd, "Выполнить комманду на серверах( -c execOnFrontends or execOnBackends)\\n")
+	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Write weight changes ( need by -c changeweight) or only present changes\\n")
+	flag.StringVar(&execCmd, "execCmd", execCmd, "Exec command on servers(need by -c execOnFrontends or execOnBackends)\\n")
 
 	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
