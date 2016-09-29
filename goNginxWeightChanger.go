@@ -204,6 +204,7 @@ func main() {
 			for _, BServer := range config.BackendServers {
 				var sshcmd string
 
+
 				//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
 				fmt.Printf("%s(%s) %s cpu_load:%d\n", BServer.Name, BServer.IP, BServer.State, GetCpuLoad(BServer.Name))
 
@@ -221,14 +222,16 @@ func main() {
 					BackendStateFlag = "down"
 
 				} else if BServer.State == "dynamic" {
+					var BackendUpSeversCount int 0
 					BackendStateFlag = ""
 					//Нужно реализовать. Бэкэнд должен быть в бакапе пока нет нагрузки на остальные
 					for _, BDServer := range config.BackendServers {
 
-						BackendUpSeversCount +=1
-						fmt.Printf("---%s -%d\n",BDServer.Name,BackendUpSeversCount)
+						BackendUpSeversCount = BackendUpSeversCount+1
+						fmt.Printf("---%s -%d\n",BDServer.Name, BackendUpSeversCount)
 
 					}
+
 				} else {
 					BackendStateFlag = ""
 
