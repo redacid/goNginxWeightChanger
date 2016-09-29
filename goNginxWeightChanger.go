@@ -10,6 +10,7 @@ import (
 	"log"
 	"bytes"
 	"./github.com/redacid/crypto/ssh"
+	"./github.com/redacid/color"
 	"io/ioutil"
 	"strings"
 	"strconv"
@@ -149,7 +150,7 @@ func main() {
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
 
 	case command == "showconfig":
-		fmt.Printf("%s", "-------------------------------------- Backend Servers -------------------------------------\n")
+		color.Cyan("-------------------------------------- Backend Servers -------------------------------------\n")
 		for _, BServer := range config.BackendServers {
 			fmt.Printf("Name: %s\n", BServer.Name)
 			fmt.Printf("IP: %s\n", BServer.IP)
