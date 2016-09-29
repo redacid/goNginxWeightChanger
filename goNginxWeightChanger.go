@@ -154,7 +154,7 @@ func main() {
 	case command == "showconfig":
 		color.Red("-------------------------------------- Backend Servers -------------------------------------")
 		for _, BServer := range config.BackendServers {
-			color.Cyan("Name:"+BServer.Name)
+			color.Cyan("Name: "+BServer.Name)
 			fmt.Printf("IP: %s\n", BServer.IP)
 			//fmt.Printf("Port: %d\n", BServer.Port)
 			fmt.Printf("SSH Port: %d\n", BServer.SSHPort)
@@ -164,7 +164,7 @@ func main() {
 		}
 		color.Green("-------------------------------------- Frontend Servers -------------------------------------")
 		for _, FServer := range config.FrontendServers {
-			fmt.Printf("Name: %s\n", FServer.Name)
+			color.Cyan("Name: "+FServer.Name)
 			fmt.Printf("IP: %s\n", FServer.IP)
 			fmt.Printf("SSH Port: %d\n", FServer.SSHPort)
 			fmt.Printf("Nginx config file: %s\n", FServer.NginxConfFile)
@@ -178,7 +178,7 @@ func main() {
 		var BackendServerNewWeight int
 		var BackendStateFlag string
 
-		fmt.Printf("%s", "-------------------------------------- Frontend Servers -------------------------------------\n")
+		color.Green("-------------------------------------- Frontend Servers -------------------------------------")
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("%s-%s:%d (%s)\n", FServer.Name, FServer.IP, FServer.SSHPort, FServer.NginxConfFile)
 
@@ -200,7 +200,7 @@ func main() {
 					ssh.PublicKeys(signer),
 				},
 			}
-			fmt.Printf("%s", "-------------------------------------- Backend Servers -------------------------------------\n")
+			color.Red("-------------------------------------- Backend Servers -------------------------------------")
 			for _, BServer := range config.BackendServers {
 				var sshcmd string
 
