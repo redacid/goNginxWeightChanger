@@ -102,6 +102,7 @@ var command string
 //var strForRepl string
 //var fileForGrep string
 var writeWeightChanges string
+var execCmd string
 //var floatForRound float64
 
 
@@ -125,8 +126,14 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 
 func init() {
 	//flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
-	flag.StringVar(&command, "c", command, "Комманда(showconfig,changeweight ...)")
-	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Записать изменения веса(changeweight), в  противном случае только показ изменений")
+	flag.StringVar(&command, "c", command, "Комманды:\\n" +
+						"showconfig\\n +
+						",changeweight\\n " +
+						"execOnFrontends (need -execCmd <cmd>)\\n")
+
+	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Записать изменения веса(-c changeweight), в  противном случае только показ изменений\\n")
+	flag.StringVar(&execCmd, "execCmd", execCmd, "Выполнить комманду на серверах( -c execOnFrontends)\\n")
+
 	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
 	//flag.StringVar (&strForRepl, "replace", strForRepl, "Строка для замены по grep фильтру")
@@ -146,7 +153,7 @@ func main() {
 		log.Fatalf("Ошибка чтения файла конфигурации %v\n", err)
 
 	}
-
+	//Настройки SSH
 	pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
 	if err != nil {
 		log.Fatalf("Не могу прочитать приватный ключ: %v", err)
@@ -201,8 +208,6 @@ func main() {
 		color.Green("Frontend Servers")
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("Server: %s-%s:%d (%s)\n", FServer.Name, FServer.IP, FServer.SSHPort, FServer.NginxConfFile)
-
-
 			//color.Red("----------------------------------------------------")
 			for _, BServer := range config.BackendServers {
 				var sshcmd string
@@ -286,9 +291,14 @@ func main() {
 			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,GetCpuLoad(BServer.Name))
 		}
 	case command == "execOnFrontends":
+		for _, FServer := range config.FrontendServers {
+			execCmd := execCmd
+			fmt.Printf("%s# %s\n",FServer.Name, executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
+		}
+
+	case command == "execOnBackends":
 		for _, BServer := range config.BackendServers {
 
-			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,GetCpuLoad(BServer.Name))
 		}
 /*
 	case command == "round":
