@@ -195,6 +195,13 @@ func main() {
 				//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
 				fmt.Printf("%s-%s:%s cpu_load:%d\n", BServer.Name, BServer.IP, BServer.Port, GetCpuLoad(BServer.Name))
 
+				LastDots := strings.LastIndex(BServer.Name, ":")
+				hostname := BServer.Name[:LastDots]
+				port := BServer.Name[LastDots+1:]
+
+				fmt.Printf("!!!!!!!!! %s:%s\n", hostname, port)
+
+
 				if BServer.State == "low" {
 					BackendServerNewWeight = 1
 				} else {
