@@ -126,11 +126,11 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 
 func init() {
 	//flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
-	flag.StringVar(&command, "c", command, "Комманды:\\n " +
-						"showconfig\\n " +
-						"changeweight\\n " +
-						"execOnBackends(need -execCmd <cmd>)\\n "+
-						"execOnFrontends(need -execCmd <cmd>)\\n ")
+	flag.StringVar(&command, "c", command, "Комманды:\n " +
+						"showconfig\n " +
+						"changeweight\n " +
+						"execOnBackends(need -execCmd <cmd>)\n "+
+						"execOnFrontends(need -execCmd <cmd>)\n ")
 
 	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Записать изменения веса(-c changeweight), в  противном случае только показ изменений\\n")
 	flag.StringVar(&execCmd, "execCmd", execCmd, "Выполнить комманду на серверах( -c execOnFrontends)\\n")
