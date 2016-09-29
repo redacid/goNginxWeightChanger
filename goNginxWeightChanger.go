@@ -126,7 +126,7 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 func init() {
 	//flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
 	flag.StringVar(&command, "c", command, "Комманда(showconfig,changeweight ...)")
-	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Записать извенения веса(changeweight), \n в  противном случае только показ изменений")
+	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Записать изменения веса(changeweight), в  противном случае только показ изменений")
 	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
 	//flag.StringVar (&strForRepl, "replace", strForRepl, "Строка для замены по grep фильтру")
@@ -146,6 +146,26 @@ func main() {
 		log.Fatalf("Ошибка чтения файла конфигурации %v\n", err)
 
 	}
+
+	pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
+	if err != nil {
+		log.Fatalf("Не могу прочитать приватный ключ: %v", err)
+	}
+
+	// Create the Signer for this private key.
+	signer, err := ssh.ParsePrivateKey(pkey)
+	if err != nil {
+		log.Fatalf("Не могу распарсить приватный ключ: %v", err)
+	}
+
+	sshConfig := &ssh.ClientConfig{
+		User: os.Getenv("LOGNAME"),
+		Auth: []ssh.AuthMethod{
+			// Use the PublicKeys method for remote authentication.
+			ssh.PublicKeys(signer),
+		},
+	}
+
 
 	switch {
 	default:
@@ -182,24 +202,7 @@ func main() {
 		for _, FServer := range config.FrontendServers {
 			fmt.Printf("Server: %s-%s:%d (%s)\n", FServer.Name, FServer.IP, FServer.SSHPort, FServer.NginxConfFile)
 
-			pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
-			if err != nil {
-				log.Fatalf("Не могу прочитать приватный ключ: %v", err)
-			}
 
-			// Create the Signer for this private key.
-			signer, err := ssh.ParsePrivateKey(pkey)
-			if err != nil {
-				log.Fatalf("Не могу распарсить приватный ключ: %v", err)
-			}
-
-			sshConfig := &ssh.ClientConfig{
-				User: os.Getenv("LOGNAME"),
-				Auth: []ssh.AuthMethod{
-					// Use the PublicKeys method for remote authentication.
-					ssh.PublicKeys(signer),
-				},
-			}
 			//color.Red("----------------------------------------------------")
 			for _, BServer := range config.BackendServers {
 				var sshcmd string
@@ -278,6 +281,11 @@ func main() {
 
 		}
 	case command == "snmpget":
+		for _, BServer := range config.BackendServers {
+
+			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,GetCpuLoad(BServer.Name))
+		}
+	case command == "execOnFrontends":
 		for _, BServer := range config.BackendServers {
 
 			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,GetCpuLoad(BServer.Name))
