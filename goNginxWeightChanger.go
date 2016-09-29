@@ -242,7 +242,7 @@ func main() {
 					} else {
 						BackendStateFlag = "backup"
 					}
-					fmt.Printf("New Dynamic state is %s\n",BackendStateFlag)
+					color.cyan("New Dynamic state is "+BackendStateFlag)
 
 				} else {
 					BackendStateFlag = ""
