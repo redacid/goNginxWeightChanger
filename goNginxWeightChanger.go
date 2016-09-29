@@ -129,6 +129,7 @@ func init() {
 	flag.StringVar(&command, "c", command, "Комманды:\\n " +
 						"showconfig\\n " +
 						"changeweight\\n " +
+						"execOnBackends(need -execCmd <cmd>)\\n "+
 						"execOnFrontends(need -execCmd <cmd>)\\n ")
 
 	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Записать изменения веса(-c changeweight), в  противном случае только показ изменений\\n")
@@ -298,7 +299,8 @@ func main() {
 
 	case command == "execOnBackends":
 		for _, BServer := range config.BackendServers {
-
+			execCmd := execCmd
+			fmt.Printf("%s# %s\n",BServer.Name, executeCmd(execCmd, BServer.Name + ":" + strconv.Itoa(BServer.SSHPort), sshConfig))
 		}
 /*
 	case command == "round":
