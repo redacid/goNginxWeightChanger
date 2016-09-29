@@ -154,7 +154,7 @@ func main() {
 	case command == "showconfig":
 		color.Red("-------------------------------------- Backend Servers -------------------------------------")
 		for _, BServer := range config.BackendServers {
-			fmt.Printf("Name: %s\n", BServer.Name)
+			color.Cyan("Name:"+BServer.Name)
 			fmt.Printf("IP: %s\n", BServer.IP)
 			//fmt.Printf("Port: %d\n", BServer.Port)
 			fmt.Printf("SSH Port: %d\n", BServer.SSHPort)
