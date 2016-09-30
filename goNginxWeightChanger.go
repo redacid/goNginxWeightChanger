@@ -326,8 +326,18 @@ func main() {
 			messagebody = messagebody +"\n================"+FServer.Name + "\n" + executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
 		}
 
+
 		for _, BServer := range config.BackendServers {
-			messagebody = messagebody +"\n================"+BServer.Name + "\n" + executeCmd(execCmd, BServer.Name + ":" + strconv.Itoa(BServer.SSHPort), sshConfig)
+			var host string
+			if strings.Contains(BServer.Name,":") {
+				LastDots := strings.LastIndex(BServer.Name, ":")
+				newhost := BServer.Name[:LastDots]
+				//fmt.Printf("!!!!!!!!! %s\n", newhost)
+				host = newhost
+			} else {
+				host = BServer.Name
+			}
+			messagebody = messagebody +"\n================"+ host + "\n" + executeCmd(execCmd, host + ":" + strconv.Itoa(BServer.SSHPort), sshConfig)
 		}
 
 		// Connect to the remote SMTP server.
