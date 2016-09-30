@@ -15,6 +15,7 @@ import (
 	"io/ioutil"
 	"strings"
 	"strconv"
+	"net/smtp"
 
 
 )
@@ -316,6 +317,21 @@ func main() {
 
 			//fmt.Printf("%s# %s %s %d\n",BServer.Name, execCmd, host, BServer.SSHPort)
 			fmt.Printf("%s# %s\n",BServer.Name, executeCmd(execCmd, host + ":" + strconv.Itoa(BServer.SSHPort), sshConfig))
+		}
+	case command == "mail":
+		// Set up authentication information.
+		auth := smtp.PlainAuth("", "root", "password", "localhost")
+
+		// Connect to the server, authenticate, set the sender and recipient,
+		// and send the email all in one step.
+		to := []string{"redacid@ios.in.ua"}
+		msg := []byte("To: redacid@ios.in.ua\r\n" +
+			"Subject: Go SMTP test\r\n" +
+			"\r\n" +
+			"This is the email body.\r\n")
+		err := smtp.SendMail("localhost:25", auth, "root", to, msg)
+		if err != nil {
+			log.Fatal(err)
 		}
 /*
 	case command == "round":
