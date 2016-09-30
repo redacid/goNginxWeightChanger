@@ -129,10 +129,11 @@ func init() {
 	//flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
 	flag.StringVar(&command, "c", command, "" +
 						"Commands:\n " +
-						"\t\t showconfig\n " +
-						"\t\t changeweight\n " +
-						"\t\t execOnBackends(need -execCommand <cmd>)\n "+
-						"\t\t execOnFrontends(need -execCommand <cmd>)\n ")
+						"\t\t showConfig - Show configuration file \n" +
+						"\t\t changeWeight - Change weight on Nginx frontends \n" +
+						"\t\t getStats - Get usage stats from all servers and send it to e-mail \n" +
+						"\t\t execOnBackends(need -execCommand <cmd>) - Execute command on backends \n "+
+						"\t\t execOnFrontends(need -execCommand <cmd>) - Execute command on frontends \n ")
 
 	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Write weight changes ( need by -c changeweight) or only present changes\n")
 	flag.StringVar(&execCommand, "execCommand", execCommand, "Exec command on servers(need by -c execOnFrontends or execOnBackends)\n")
@@ -181,7 +182,7 @@ func main() {
 	default:
 		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
 
-	case command == "showconfig":
+	case command == "showConfig":
 		color.Red("Backend Servers")
 		for _, BServer := range config.BackendServers {
 			color.Cyan("Name: "+BServer.Name)
@@ -204,7 +205,7 @@ func main() {
 	//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
 
 
-	case command == "changeweight":
+	case command == "changeWeight":
 		var BackendServerNewWeight int
 		var BackendStateFlag string
 
@@ -289,7 +290,7 @@ func main() {
 			}
 
 		}
-	case command == "snmpget":
+	case command == "snmpGet":
 		for _, BServer := range config.BackendServers {
 
 			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,GetCpuLoad(BServer.Name))
