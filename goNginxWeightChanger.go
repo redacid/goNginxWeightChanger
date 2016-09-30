@@ -319,7 +319,7 @@ func main() {
 			fmt.Printf("%s# %s\n",BServer.Name, executeCmd(execCmd, host + ":" + strconv.Itoa(BServer.SSHPort), sshConfig))
 		}
 	case command == "mail":
-
+		var messagebody string
 
 		for _, FServer := range config.FrontendServers {
 			execCmd := "top -b -n 1 | head -n 20"
