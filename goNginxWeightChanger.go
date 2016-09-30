@@ -329,13 +329,14 @@ func main() {
 		// Set the sender and recipient.
 		c.Mail("root")
 		c.Rcpt("redacid@ios.in.ua")
+
 		// Send the email body.
 		wc, err := c.Data()
 		if err != nil {
 			log.Fatal(err)
 		}
 		defer wc.Close()
-		buf := bytes.NewBufferString("This is the email body.")
+		buf := bytes.NewBufferString("Subject:TEST\n This is the email body.")
 		if _, err = buf.WriteTo(wc); err != nil {
 			log.Fatal(err)
 		}
