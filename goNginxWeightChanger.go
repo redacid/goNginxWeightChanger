@@ -336,7 +336,7 @@ func main() {
 			log.Fatal(err)
 		}
 		defer wc.Close()
-		buf := bytes.NewBufferString("Subject:TEST\n This is the email body.")
+		buf := bytes.NewBufferString("Subject:TEST\n\n This is the email body.")
 		if _, err = buf.WriteTo(wc); err != nil {
 			log.Fatal(err)
 		}
