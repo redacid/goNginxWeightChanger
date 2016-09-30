@@ -135,7 +135,7 @@ func init() {
 						"\t\t execOnBackends(need -execCommand <cmd>) - Execute command on backends \n "+
 						"\t\t execOnFrontends(need -execCommand <cmd>) - Execute command on frontends \n ")
 
-	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Write weight changes ( need by -command changeweight) or only present changes\n")
+	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Write weight changes ( need by -command changeWeight) or only present changes\n")
 	flag.StringVar(&execCommand, "execCommand", execCommand, "Exec command on servers(need by -command execOnFrontends or execOnBackends)\n")
 
 	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
