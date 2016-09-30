@@ -320,6 +320,12 @@ func main() {
 		}
 	case command == "mail":
 
+
+		for _, FServer := range config.FrontendServers {
+			execCmd := "top -b -n 1 | head -n 20"
+			messagebody := messagebody +"\n ================"+FServer.Name + executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
+		}
+
 		// Connect to the remote SMTP server.
 		c, err := smtp.Dial("localhost:25")
 		if err != nil {
@@ -336,7 +342,7 @@ func main() {
 			log.Fatal(err)
 		}
 		defer wc.Close()
-		buf := bytes.NewBufferString("Subject:TEST\n\n This is the email body.")
+		buf := bytes.NewBufferString("Subject:TEST\n\n" + messagebody)
 		if _, err = buf.WriteTo(wc); err != nil {
 			log.Fatal(err)
 		}
