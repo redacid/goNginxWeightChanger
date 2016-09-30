@@ -320,10 +320,10 @@ func main() {
 		}
 	case command == "mail":
 		var messagebody string
-		execCmd := "top -b -n 1 | head -n 20"
+		execCmd := "top -b -n 1 | head -n 20 && iotop -b -n 1 -o"
 
 		for _, FServer := range config.FrontendServers {
-			messagebody = messagebody +"\n================"+FServer.Name + "\n" + executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
+			messagebody = messagebody +"\n================ "+FServer.Name + "\n" + executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
 		}
 
 
@@ -337,7 +337,7 @@ func main() {
 			} else {
 				host = BServer.Name
 			}
-			messagebody = messagebody +"\n================"+ host + "\n" + executeCmd(execCmd, host + ":" + strconv.Itoa(BServer.SSHPort), sshConfig)
+			messagebody = messagebody +"\n================ "+ host + "\n" + executeCmd(execCmd, host + ":" + strconv.Itoa(BServer.SSHPort), sshConfig)
 		}
 
 		// Connect to the remote SMTP server.
