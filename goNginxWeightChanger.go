@@ -154,19 +154,19 @@ func main() {
 	err := decoder.Decode(&config)
 	if err != nil {
 		//fmt.Printf("%s\n","Ошибка чтения файла конфигурации")
-		log.Fatalf("Ошибка чтения файла конфигурации %v\n", err)
+		log.Fatalf("Error read configuration file %v\n", err)
 
 	}
 	//Настройки SSH
 	pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
 	if err != nil {
-		log.Fatalf("Не могу прочитать приватный ключ: %v", err)
+		log.Fatalf("Can't open private key: %v", err)
 	}
 
 	// Create the Signer for this private key.
 	signer, err := ssh.ParsePrivateKey(pkey)
 	if err != nil {
-		log.Fatalf("Не могу распарсить приватный ключ: %v", err)
+		log.Fatalf("Can't parse private key: %v", err)
 	}
 
 	sshConfig := &ssh.ClientConfig{
