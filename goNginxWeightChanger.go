@@ -348,7 +348,7 @@ func main() {
 		defer c.Close()
 		// Set the sender and recipient.
 		c.Mail("root")
-		c.Rcpt("redacid@ios.in.ua, redacid@redacid.org.ua")
+		c.Rcpt("root")
 
 
 		// Send the email body.
