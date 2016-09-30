@@ -329,7 +329,7 @@ func main() {
 			"Subject: Go SMTP test\r\n" +
 			"\r\n" +
 			"This is the email body.\r\n")
-		err := smtp.SendMail("192.168.4.20:25", auth, "root", to, msg)
+		err := smtp.SendMail("test1:25", auth, "root", to, msg)
 		if err != nil {
 			log.Fatal(err)
 		}
