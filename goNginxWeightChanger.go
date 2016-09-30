@@ -361,6 +361,7 @@ func main() {
 		if _, err = buf.WriteTo(wc); err != nil {
 			log.Fatal(err)
 		}
+		fmt.Printf("%s",messagebody)
 /*
 	case command == "round":
 		fmt.Printf("%d", myfu.Round(floatForRound))
