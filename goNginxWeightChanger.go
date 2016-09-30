@@ -348,7 +348,8 @@ func main() {
 		defer c.Close()
 		// Set the sender and recipient.
 		c.Mail("root")
-		c.Rcpt("redacid@ios.in.ua")
+		c.Rcpt("redacid@ios.in.ua, redacid@redacid.org.ua")
+
 
 		// Send the email body.
 		wc, err := c.Data()
@@ -356,7 +357,7 @@ func main() {
 			log.Fatal(err)
 		}
 		defer wc.Close()
-		buf := bytes.NewBufferString("Subject:TEST\n\n" + messagebody)
+		buf := bytes.NewBufferString("Subject:Servers Stats\n\n" + messagebody)
 		if _, err = buf.WriteTo(wc); err != nil {
 			log.Fatal(err)
 		}
