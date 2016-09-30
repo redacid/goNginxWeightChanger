@@ -321,7 +321,7 @@ func main() {
 	case command == "mail":
 
 		// Connect to the remote SMTP server.
-		c, err := smtp.Dial("mail.example.com:25")
+		c, err := smtp.Dial("localhost:25")
 		if err != nil {
 			log.Fatal(err)
 		}
