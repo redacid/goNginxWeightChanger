@@ -320,7 +320,7 @@ func main() {
 		}
 	case command == "mail":
 		// Set up authentication information.
-		auth := smtp.PlainAuth("", "root", "password", "192.168.4.20")
+		auth := smtp.PlainAuth("", "root", "password", "localhost")
 
 		// Connect to the server, authenticate, set the sender and recipient,
 		// and send the email all in one step.
