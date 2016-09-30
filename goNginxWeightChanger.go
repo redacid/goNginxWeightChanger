@@ -127,7 +127,7 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 
 func init() {
 	//flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
-	flag.StringVar(&command, "c", command, "" +
+	flag.StringVar(&command, "command", command, "" +
 						"Commands:\n " +
 						"\t\t showConfig - Show configuration file \n" +
 						"\t\t changeWeight - Change weight on Nginx frontends \n" +
@@ -135,8 +135,8 @@ func init() {
 						"\t\t execOnBackends(need -execCommand <cmd>) - Execute command on backends \n "+
 						"\t\t execOnFrontends(need -execCommand <cmd>) - Execute command on frontends \n ")
 
-	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Write weight changes ( need by -c changeweight) or only present changes\n")
-	flag.StringVar(&execCommand, "execCommand", execCommand, "Exec command on servers(need by -c execOnFrontends or execOnBackends)\n")
+	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Write weight changes ( need by -command changeweight) or only present changes\n")
+	flag.StringVar(&execCommand, "execCommand", execCommand, "Exec command on servers(need by -command execOnFrontends or execOnBackends)\n")
 
 	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
@@ -180,7 +180,7 @@ func main() {
 
 	switch {
 	default:
-		fmt.Printf("%s", "Не указана или неверная комманда введите -h для получения помощи\n")
+		fmt.Printf("%s", "Invalid or undefined command, type -h to help \n")
 
 	case command == "showConfig":
 		color.Red("Backend Servers")
@@ -260,21 +260,21 @@ func main() {
 					BackendStateFlag = ""
 
 				}
-				fmt.Printf("%s", "- Применяем regexp к конфигу nginx\n")
+				fmt.Printf("%s", "- Apply regexp to Nginx configuration file\n")
 				NginxServerRegexp := "(server)(\\s+)(" + BServer.Name + ")(\\s+)(weight)(=)(\\d+)(\\s+)(max_fails)(=)(\\d+)(\\s+)(fail_timeout)(=)(5).*(;)"
 				NginxServerLineCmd := "cat \"" + FServer.NginxConfFile + "\" | grep -P \"" + NginxServerRegexp + "\"| grep \"" + BServer.Name + "\" | sed 's/^[ \\t]*//' | grep -v ^\"#\" | head -n 1"
 				NginxServerLine := executeCmd(NginxServerLineCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
 				NginxServerNewLine := "server " + BServer.Name + " weight=" + strconv.Itoa(BackendServerNewWeight) + " max_fails=1 fail_timeout=5 " + BackendStateFlag + ";"
 
 				if writeWeightChanges == "yes" {
-					fmt.Printf("%s", "- Производим замену в конфиге Nginx\n")
+					fmt.Printf("%s", "- Write changes to Nginx configuration file\n")
 					sshcmd = "sed -i -e '/^[ \\t]*#/!s/" + strings.TrimRight(NginxServerLine, "\r\n") + "/" + NginxServerNewLine + "/g' " + FServer.NginxConfFile
 
 				} else if writeWeightChanges == "no" {
-					fmt.Printf("%s", "- Выводим изменения в конфиге Nginx\n")
+					fmt.Printf("%s", "- Print changes in Nginx configuration file \n")
 					sshcmd = "sed -e '/^[ \\t]*#/!s/" + strings.TrimRight(NginxServerLine, "\r\n") + "/" + NginxServerNewLine + "/g' " + FServer.NginxConfFile
 				} else {
-					log.Fatal("Не определен параметр writeWeightChanges, введите -h для помощи")
+					log.Fatal("Param writeWeightChanges undefined, type -h to help")
 					os.Exit(1)
 				}
 				color.Cyan("New Weight is "+strconv.Itoa(BackendServerNewWeight))
@@ -282,11 +282,11 @@ func main() {
 				//fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			}
 			if writeWeightChanges == "yes" {
-				fmt.Printf("%s", "- Релоадим Nginx\n\n")
+				fmt.Printf("%s", "- Reload Nginx daemon \n\n")
 				nginxReloadCmd := "/etc/init.d/nginx reload"
 				fmt.Printf("%s\n", executeCmd(nginxReloadCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 			} else {
-				fmt.Print("- Готово.\n\n")
+				fmt.Print("- Done.\n\n")
 			}
 
 		}
@@ -350,7 +350,6 @@ func main() {
 		// Set the sender and recipient.
 		c.Mail("root")
 		c.Rcpt("root")
-
 
 		// Send the email body.
 		wc, err := c.Data()
