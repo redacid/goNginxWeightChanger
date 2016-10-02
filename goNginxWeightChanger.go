@@ -159,6 +159,7 @@ func main() {
 	}
 	//Настройки SSH
 	pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
+	//pkey, err := ioutil.ReadFile("/root/.ssh/id_rsa")
 	if err != nil {
 		log.Fatalf("Can't open private key: %v", err)
 	}
