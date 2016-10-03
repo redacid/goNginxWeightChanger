@@ -257,6 +257,10 @@ func main() {
 				} else {
 					//Нужно продумать формулу
 					BackendServerNewWeight = 100 - GetCpuLoad(BServer.Name)
+
+						if BackendServerNewWeight <= 0 {
+							BackendServerNewWeight = 1
+						}
 					//BackendServerNewWeight = GetCpuLoad(BServer.Name)
 				}
 
