@@ -332,7 +332,7 @@ func main() {
 	case command == "snmpGetLoad":
 		for _, BServer := range config.BackendServers {
 
-			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,GetCpuLoad(BServer.Name))
+			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,100-GetCpuLoad(BServer.Name))
 		}
 	case command == "execOnFrontends":
 		for _, FServer := range config.FrontendServers {
