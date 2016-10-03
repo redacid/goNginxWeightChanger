@@ -49,11 +49,12 @@ type Global struct {
 	EmailTo string `json:"emailTo"`
 }
 
-const mib_percent_cpu_sys string = ".1.3.6.1.4.1.2021.11.9.0"
-const mib_percent_cpu_usr string = ".1.3.6.1.4.1.2021.11.10.0"
+//const mib_percent_cpu_sys string = ".1.3.6.1.4.1.2021.11.9.0"
+//const mib_percent_cpu_usr string = ".1.3.6.1.4.1.2021.11.10.0"
+const mib_percent_cpu_idle string = ".1.3.6.1.4.1.2021.11.11.0"
 
 func GetCpuLoad(host string) int {
-	var sys,usr int
+	var idle int
 
 	if strings.Contains(host,":") {
 		LastDots := strings.LastIndex(host, ":")
@@ -68,7 +69,7 @@ func GetCpuLoad(host string) int {
 	if err != nil {
 		log.Fatal(err)
 	}
-	cpu_sys, err := s.Get(mib_percent_cpu_sys)
+/*	cpu_sys, err := s.Get(mib_percent_cpu_sys)
 	if err == nil {
 		for _, v := range cpu_sys.Variables {
 			switch v.Type {
@@ -96,7 +97,22 @@ func GetCpuLoad(host string) int {
 	}
 	//fmt.Printf("Error: %v\n", err)
 
-	return sys+usr
+	return sys+usr */
+
+	cpu_idle, err := s.Get(mib_percent_cpu_idle)
+	if err == nil {
+		for _, v := range cpu_idle.Variables {
+			switch v.Type {
+			default:
+				//fmt.Printf("Type: %d - Value: %v\n", host, v.Value)
+				idle = int(v.Value.(int))
+			case gosnmp.OctetString:
+			//log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
+
+			}
+		}
+	}
+	return idle
 }
 
 var command string
@@ -240,7 +256,8 @@ func main() {
 					BackendServerNewWeight = 1
 				} else {
 					//Нужно продумать формулу
-					BackendServerNewWeight = 100 - GetCpuLoad(BServer.Name)
+					//BackendServerNewWeight = 100 - GetCpuLoad(BServer.Name)
+					BackendServerNewWeight = GetCpuLoad(BServer.Name)
 				}
 
 				if BServer.State == "backup" {
