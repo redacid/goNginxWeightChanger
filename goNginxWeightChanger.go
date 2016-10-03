@@ -256,8 +256,8 @@ func main() {
 					BackendServerNewWeight = 1
 				} else {
 					//Нужно продумать формулу
-					//BackendServerNewWeight = 100 - GetCpuLoad(BServer.Name)
-					BackendServerNewWeight = GetCpuLoad(BServer.Name)
+					BackendServerNewWeight = 100 - GetCpuLoad(BServer.Name)
+					//BackendServerNewWeight = GetCpuLoad(BServer.Name)
 				}
 
 				if BServer.State == "backup" {
