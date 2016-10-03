@@ -151,9 +151,9 @@ func init() {
 func main() {
 	flag.Parse()
 
-	f, err := os.OpenFile("/var/log/nginxweight.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalf("error opening log file: %v", err)
+	f, err1 := os.OpenFile("/var/log/nginxweight.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if err1 != nil {
+		log.Fatalf("error opening log file: %v", err1)
 	}
 	defer f.Close()
 
