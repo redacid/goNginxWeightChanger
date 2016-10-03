@@ -156,10 +156,7 @@ func main() {
 		log.Fatalf("error opening log file: %v", err1)
 	}
 	defer f.Close()
-
 	log.SetOutput(f)
-
-
 
 	//Парсим файл конфигурации
 	file, _ := os.Open("./config.json")
@@ -272,7 +269,7 @@ func main() {
 						BackendStateFlag = "backup"
 					}
 					color.Cyan("New Dynamic state is "+BackendStateFlag)
-					log.Println("New Dynamic state is "+BackendStateFlag)
+					log.Println(BServer.Name+" New Dynamic state is "+BackendStateFlag)
 
 				} else {
 					BackendStateFlag = ""
@@ -296,7 +293,7 @@ func main() {
 					os.Exit(1)
 				}
 				color.Cyan("New Weight is "+strconv.Itoa(BackendServerNewWeight))
-				log.Println("New Weight is "+strconv.Itoa(BackendServerNewWeight))
+				log.Println(BServer.Name+" New Weight is "+strconv.Itoa(BackendServerNewWeight))
 				fmt.Printf("%s\n", executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 				//fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			}
