@@ -279,7 +279,7 @@ func main() {
 
 					}
 					//fmt.Printf("--- Up Servers(%d): %d\n",BackendUpSeversSummaryLoad, BackendUpSeversCount)
-					AvgUpServersLoad := BackendUpSeversSummaryLoad/BackendUpSeversCount
+					AvgUpServersLoad := 100 - BackendUpSeversSummaryLoad/BackendUpSeversCount
 					fmt.Printf("--- Up Servers(AvgLoad: %d) count: %d\n",AvgUpServersLoad, BackendUpSeversCount)
 					if AvgUpServersLoad > config.PercentDynamic {
 						//state UP
