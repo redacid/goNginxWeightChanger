@@ -361,7 +361,7 @@ func main() {
 			log.Fatal(err)
 		}
 		defer wc.Close()
-		buf := bytes.NewBufferString("Subject:Servers Stats\n\n" + messagebody)
+		buf := bytes.NewBufferString("Subject:All Servers Stats\n\n" + messagebody)
 		if _, err = buf.WriteTo(wc); err != nil {
 			log.Fatal(err)
 		}
@@ -389,7 +389,7 @@ func main() {
 			log.Fatal(err)
 		}
 		defer wc.Close()
-		buf := bytes.NewBufferString("Subject:Servers Stats\n\n" + messagebody)
+		buf := bytes.NewBufferString("Subject:"+srvName +" Server Stats\n\n" + messagebody)
 		if _, err = buf.WriteTo(wc); err != nil {
 			log.Fatal(err)
 		}
