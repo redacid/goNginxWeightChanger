@@ -204,6 +204,9 @@ func main() {
 		},
 	}
 
+	green := color.New(color.FgGreen).SprintFunc()
+	//red := color.New(color.FgRed).SprintFunc()
+	//yellow := color.New(color.FgYellow).SprintFunc()
 
 	switch {
 	default:
@@ -250,7 +253,7 @@ func main() {
 				var sshcmd string
 
 				//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
-				fmt.Printf("%s(%s) %s cpu_load:%d\n", BServer.Name, BServer.IP, BServer.State, GetCpuLoad(BServer.Name))
+				fmt.Printf("%s(%s) %s cpu_load:%d\n", BServer.Name, BServer.IP, green(BServer.State), GetCpuLoad(BServer.Name))
 
 				if BServer.State == "low" {
 					BackendServerNewWeight = 1
