@@ -140,7 +140,7 @@ func init() {
 	flag.StringVar(&command, "command", command, "" +
 		"Commands:\n " +
 		"\t\t showConfig - Show configuration file \n" +
-		"\t\t changeWeight - Change weight on Nginx frontends ( need -writeWeightChanges <yes\no> )\n" +
+		"\t\t changeWeight - Change weight on Nginx frontends ( need -writeWeightChanges <yes\\no> )\n" +
 		"\t\t snmpGetLoad - Get CPU load from backend servers via SNMP \n" +
 		"\t\t getSrvStats - Get usage stats from server ( need -srvName <name> ) and send it to e-mail \n" +
 		"\t\t getStatsAll - Get usage stats from all servers and send it to e-mail \n" +
