@@ -23,7 +23,7 @@ import (
 type Config struct {
 	BackendServers  []BackendServer
 	FrontendServers []FrontendServer
-	smtpHostPort      string `json:"smtpHostPort"`
+	smtpHostPort
 	//	ConfigGlobal ConfigGlobal
 }
 
@@ -44,6 +44,9 @@ type FrontendServer struct {
 	NginxConfFile string `json:"NginxConfFile"`
 }
 
+type smtpHostPort struct {
+	smtpHostPort string `json:"smtpHostPort"`
+}
 
 //type ConfigGlobal struct {
 //	RegExNginxServer string `json:"RegExNginxServer"`
