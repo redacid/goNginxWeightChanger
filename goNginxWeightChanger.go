@@ -274,7 +274,7 @@ func main() {
 					for _, BDServer := range config.BackendServers {
 						if BDServer.State == "up" {
 							BackendUpSeversCount = BackendUpSeversCount+1
-							BackendUpSeversSummaryLoad = BackendUpSeversSummaryLoad+GetCpuLoad(BDServer.Name)
+							BackendUpSeversSummaryLoad = 100 - BackendUpSeversSummaryLoad+GetCpuLoad(BDServer.Name)
 						}
 
 					}
@@ -282,7 +282,9 @@ func main() {
 					AvgUpServersLoad := BackendUpSeversSummaryLoad/BackendUpSeversCount
 					fmt.Printf("--- Up Servers(AvgLoad: %d) count: %d\n",AvgUpServersLoad, BackendUpSeversCount)
 					if AvgUpServersLoad > config.PercentDynamic {
-						BackendStateFlag = "up"
+						//state UP
+						BackendStateFlag = ""
+
 
 					} else {
 						BackendStateFlag = "backup"
@@ -291,6 +293,7 @@ func main() {
 					log.Println(FServer.Name+"-"+BServer.Name+" New Dynamic state is "+BackendStateFlag)
 
 				} else {
+					//state UP
 					BackendStateFlag = ""
 
 				}
