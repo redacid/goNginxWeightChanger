@@ -269,7 +269,7 @@ func main() {
 						BackendStateFlag = "backup"
 					}
 					color.Cyan("New Dynamic state is "+BackendStateFlag)
-					log.Println(BServer.Name+" New Dynamic state is "+BackendStateFlag)
+					log.Println(FServer.Name+"-"+BServer.Name+" New Dynamic state is "+BackendStateFlag)
 
 				} else {
 					BackendStateFlag = ""
@@ -290,10 +290,11 @@ func main() {
 					sshcmd = "sed -e '/^[ \\t]*#/!s/" + strings.TrimRight(NginxServerLine, "\r\n") + "/" + NginxServerNewLine + "/g' " + FServer.NginxConfFile
 				} else {
 					log.Fatal("Param writeWeightChanges undefined, type -h to help")
+					fmt.Print("Param writeWeightChanges undefined, type -h to help")
 					os.Exit(1)
 				}
 				color.Cyan("New Weight is "+strconv.Itoa(BackendServerNewWeight))
-				log.Println(BServer.Name+" New Weight is "+strconv.Itoa(BackendServerNewWeight))
+				log.Println(FServer.Name+"-"+BServer.Name+" New Weight is "+strconv.Itoa(BackendServerNewWeight))
 				fmt.Printf("%s\n", executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 				//fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			}
