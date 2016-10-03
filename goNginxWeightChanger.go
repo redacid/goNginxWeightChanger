@@ -23,7 +23,7 @@ import (
 type Config struct {
 	BackendServers  []BackendServer
 	FrontendServers []FrontendServer
-	GlobalConfigParams GlobalConfig
+	smtpHostPort      string `json:"smtpHostPort"`
 	//	ConfigGlobal ConfigGlobal
 }
 
@@ -43,10 +43,7 @@ type FrontendServer struct {
 	SSHPort       int `json:"sshPort"`
 	NginxConfFile string `json:"NginxConfFile"`
 }
-type GlobalConfig struct {
-	smtpHostPort          string `json:"smtpHostPort"`
 
-}
 
 //type ConfigGlobal struct {
 //	RegExNginxServer string `json:"RegExNginxServer"`
@@ -221,7 +218,7 @@ func main() {
 			fmt.Printf("Nginx config file: %s\n", FServer.NginxConfFile)
 			fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 		}
-		fmt.Printf("smtpHostPort: %s\n",config.GlobalConfigParams)
+		fmt.Printf("smtpHostPort: %s\n",config.smtpHostPort)
 	//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
 	//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
 

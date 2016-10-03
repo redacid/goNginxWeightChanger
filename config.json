@@ -48,7 +48,5 @@
       "NginxConfFile": "/etc/nginx/conf.d/upstream-web.conf"
     }
   ],
-  "Global": {
-    "smtpHostPort": "localhost:25"
-  }
+     "smtpHostPort": "localhost:25"
 }
