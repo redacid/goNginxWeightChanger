@@ -75,7 +75,7 @@ func GetCpuLoad(host string) int {
 				//fmt.Printf("Type: %d - Value: %v\n", host, v.Value)
 				sys = int(v.Value.(int))
 			case gosnmp.OctetString:
-				//log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
+			//log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
 
 			}
 		}
@@ -88,7 +88,7 @@ func GetCpuLoad(host string) int {
 				//fmt.Printf("Type: %d - Value: %v\n", host, v.Value)
 				usr = int(v.Value.(int))
 			case gosnmp.OctetString:
-				//log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
+			//log.Printf("Response: %s : %s : %s \n", v.Name, v.Value.(string), v.Type.String())
 
 			}
 		}
@@ -104,6 +104,7 @@ var command string
 //var fileForGrep string
 var writeWeightChanges string
 var execCommand string
+var srvName string
 //var floatForRound float64
 
 
@@ -128,15 +129,17 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 func init() {
 	//flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
 	flag.StringVar(&command, "command", command, "" +
-						"Commands:\n " +
-						"\t\t showConfig - Show configuration file \n" +
-						"\t\t changeWeight - Change weight on Nginx frontends \n" +
-						"\t\t getStats - Get usage stats from all servers and send it to e-mail \n" +
-						"\t\t execOnBackends(need -execCommand <cmd>) - Execute command on backends \n "+
-						"\t\t execOnFrontends(need -execCommand <cmd>) - Execute command on frontends \n ")
+		"Commands:\n " +
+		"\t\t showConfig - Show configuration file \n" +
+		"\t\t changeWeight - Change weight on Nginx frontends \n" +
+		"\t\t getSrvStats - Get usage stats from server ( need -SrvName <name> ) and send it to e-mail \n" +
+		"\t\t getStatsAll - Get usage stats from all servers and send it to e-mail \n" +
+		"\t\t execOnBackends(need -execCommand <cmd>) - Execute command on backends \n "+
+		"\t\t execOnFrontends(need -execCommand <cmd>) - Execute command on frontends \n ")
 
 	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Write weight changes ( need by -command changeWeight) or only present changes\n")
 	flag.StringVar(&execCommand, "execCommand", execCommand, "Exec command on servers(need by -command execOnFrontends or execOnBackends)\n")
+	flag.StringVar(&srvName, "srvName", srvName, "Server name, hostname[:sshport] (need by -command getSrvStats)\n")
 
 	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
@@ -159,7 +162,6 @@ func main() {
 	}
 	//Настройки SSH
 	pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
-	//pkey, err := ioutil.ReadFile("/root/.ssh/id_rsa")
 	if err != nil {
 		log.Fatalf("Can't open private key: %v", err)
 	}
@@ -320,7 +322,7 @@ func main() {
 			//fmt.Printf("%s# %s %s %d\n",BServer.Name, execCmd, host, BServer.SSHPort)
 			fmt.Printf("%s# %s\n",BServer.Name, executeCmd(execCmd, host + ":" + strconv.Itoa(BServer.SSHPort), sshConfig))
 		}
-	case command == "getStats":
+	case command == "getStatsAll":
 		var messagebody string
 		execCmd := "top -b -n 1 | head -n 20 && iotop -b -n 1 -o"
 
@@ -363,19 +365,47 @@ func main() {
 			log.Fatal(err)
 		}
 		fmt.Printf("%s",messagebody)
-/*
-	case command == "round":
-		fmt.Printf("%d", myfu.Round(floatForRound))
 
-	case command == "grep":
-		//fmt.Printf("%d", round(floatForRound))
-		// ./goNginxWeightChanger -c grep -grep="(server)(\s+)(back4)(\s+)(weight)(=)(\d+)(\s+)(max_fails)(=)(\d+)(\s+)(fail_timeout)(=)(5)(;)" -grepfile="nginx.conf"
-		myfu.Grep2(strForGrep, fileForGrep)
+	case command == "getSrvStats":
+		var messagebody string
+		execCmd := "top -b -n 1 | head -n 20 && iotop -b -n 1 -o"
 
-	case command == "replace":
-		// ./goNginxWeightChanger -c replace -grep="(server)(\s+)(back4)(\s+)(weight)(=)(\d+)(\s+)(max_fails)(=)(\d+)(\s+)(fail_timeout)(=)(5)(;)" -replace "sdfsdfsdf" -grepfile="nginx.conf"
-		myfu.Replace(strForGrep,strForRepl,fileForGrep)
+		messagebody = messagebody +"\n================ "+ srvName + "\n" + executeCmd(execCmd, srvName, sshConfig)
 
-*/
+		// Connect to the remote SMTP server.
+		c, err := smtp.Dial("localhost:25")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer c.Close()
+		// Set the sender and recipient.
+		c.Mail("root")
+		c.Rcpt("root")
+
+		// Send the email body.
+		wc, err := c.Data()
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer wc.Close()
+		buf := bytes.NewBufferString("Subject:Servers Stats\n\n" + messagebody)
+		if _, err = buf.WriteTo(wc); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("%s",messagebody)
+	/*
+		case command == "round":
+			fmt.Printf("%d", myfu.Round(floatForRound))
+
+		case command == "grep":
+			//fmt.Printf("%d", round(floatForRound))
+			// ./goNginxWeightChanger -c grep -grep="(server)(\s+)(back4)(\s+)(weight)(=)(\d+)(\s+)(max_fails)(=)(\d+)(\s+)(fail_timeout)(=)(5)(;)" -grepfile="nginx.conf"
+			myfu.Grep2(strForGrep, fileForGrep)
+
+		case command == "replace":
+			// ./goNginxWeightChanger -c replace -grep="(server)(\s+)(back4)(\s+)(weight)(=)(\d+)(\s+)(max_fails)(=)(\d+)(\s+)(fail_timeout)(=)(5)(;)" -replace "sdfsdfsdf" -grepfile="nginx.conf"
+			myfu.Replace(strForGrep,strForRepl,fileForGrep)
+
+	*/
 	}
 }
