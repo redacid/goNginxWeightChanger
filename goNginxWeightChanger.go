@@ -49,12 +49,12 @@ type Global struct {
 	EmailTo string `json:"emailTo"`
 }
 
-//const mib_percent_cpu_sys string = ".1.3.6.1.4.1.2021.11.9.0"
-//const mib_percent_cpu_usr string = ".1.3.6.1.4.1.2021.11.10.0"
-const mib_percent_cpu_idle string = ".1.3.6.1.4.1.2021.11.11.0"
+const mib_percent_cpu_sys string = ".1.3.6.1.4.1.2021.11.9.0"
+const mib_percent_cpu_usr string = ".1.3.6.1.4.1.2021.11.10.0"
+//const mib_percent_cpu_idle string = ".1.3.6.1.4.1.2021.11.11.0"
 
 func GetCpuLoad(host string) int {
-	var idle int
+	var sys,usr int
 
 	if strings.Contains(host,":") {
 		LastDots := strings.LastIndex(host, ":")
@@ -69,7 +69,7 @@ func GetCpuLoad(host string) int {
 	if err != nil {
 		log.Fatal(err)
 	}
-/*	cpu_sys, err := s.Get(mib_percent_cpu_sys)
+	cpu_sys, err := s.Get(mib_percent_cpu_sys)
 	if err == nil {
 		for _, v := range cpu_sys.Variables {
 			switch v.Type {
@@ -97,9 +97,9 @@ func GetCpuLoad(host string) int {
 	}
 	//fmt.Printf("Error: %v\n", err)
 
-	return sys+usr */
+	return sys+usr
 
-	cpu_idle, err := s.Get(mib_percent_cpu_idle)
+	/*cpu_idle, err := s.Get(mib_percent_cpu_idle)
 	if err == nil {
 		for _, v := range cpu_idle.Variables {
 			switch v.Type {
@@ -112,7 +112,7 @@ func GetCpuLoad(host string) int {
 			}
 		}
 	}
-	return idle
+	return idle*/
 }
 
 var command string
@@ -274,12 +274,12 @@ func main() {
 					for _, BDServer := range config.BackendServers {
 						if BDServer.State == "up" {
 							BackendUpSeversCount = BackendUpSeversCount+1
-							BackendUpSeversSummaryLoad = 100 - BackendUpSeversSummaryLoad+GetCpuLoad(BDServer.Name)
+							BackendUpSeversSummaryLoad = BackendUpSeversSummaryLoad+GetCpuLoad(BDServer.Name)
 						}
 
 					}
 					//fmt.Printf("--- Up Servers(%d): %d\n",BackendUpSeversSummaryLoad, BackendUpSeversCount)
-					AvgUpServersLoad := 100 - BackendUpSeversSummaryLoad/BackendUpSeversCount
+					AvgUpServersLoad := BackendUpSeversSummaryLoad/BackendUpSeversCount
 					fmt.Printf("--- Up Servers(AvgLoad: %d) count: %d\n",AvgUpServersLoad, BackendUpSeversCount)
 					if AvgUpServersLoad > config.PercentDynamic {
 						//state UP
@@ -332,7 +332,7 @@ func main() {
 	case command == "snmpGetLoad":
 		for _, BServer := range config.BackendServers {
 
-			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,100-GetCpuLoad(BServer.Name))
+			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,GetCpuLoad(BServer.Name))
 		}
 	case command == "execOnFrontends":
 		for _, FServer := range config.FrontendServers {
