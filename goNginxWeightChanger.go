@@ -50,6 +50,8 @@ type Global struct {
 	NginxReloadCommand string `json:"nginxReloadCommand"`
 	PercentDynamic int `json:"percentDynamic"`
 	StatsCommand string `json:"statsCommand"`
+	EmailFrom string `json:"emailFrom"`
+	EmailTo string `json:"emailTo"`
 }
 
 
@@ -237,6 +239,8 @@ func main() {
 		fmt.Printf("NginxReloadCommand: %s\n",config.NginxReloadCommand)
 		fmt.Printf("PercentDynamic: %d\n",config.PercentDynamic)
 		fmt.Printf("StatsCommand: %s\n",config.StatsCommand)
+		fmt.Printf("EmailFrom: %s\n",config.EmailFrom)
+		fmt.Printf("EmailTo: %s\n",config.EmailTo)
 
 	case command == "changeWeight":
 		var BackendServerNewWeight int
@@ -385,8 +389,8 @@ func main() {
 		}
 		defer c.Close()
 		// Set the sender and recipient.
-		c.Mail("root")
-		c.Rcpt("root")
+		c.Mail(config.EmailFrom)
+		c.Rcpt(config.EmailTo)
 
 		// Send the email body.
 		wc, err := c.Data()
@@ -414,8 +418,8 @@ func main() {
 		}
 		defer c.Close()
 		// Set the sender and recipient.
-		c.Mail("root")
-		c.Rcpt("root")
+		c.Mail(config.EmailFrom)
+		c.Rcpt(config.EmailTo)
 
 		// Send the email body.
 		wc, err := c.Data()
