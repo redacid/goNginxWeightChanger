@@ -42,6 +42,10 @@ type FrontendServer struct {
 	SSHPort       int `json:"sshPort"`
 	NginxConfFile string `json:"NginxConfFile"`
 }
+type GlobalConfig struct {
+	smtpHostPort          string `json:"smtpHostPort"`
+
+}
 
 //type ConfigGlobal struct {
 //	RegExNginxServer string `json:"RegExNginxServer"`
@@ -194,6 +198,7 @@ func main() {
 
 	switch {
 	default:
+		//log.Fatal("Invalid or undefined command, type -h to help \n")
 		fmt.Printf("%s", "Invalid or undefined command, type -h to help \n")
 
 	case command == "showConfig":
@@ -215,6 +220,7 @@ func main() {
 			fmt.Printf("Nginx config file: %s\n", FServer.NginxConfFile)
 			fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 		}
+		fmt.Printf("smtpHostPort: %s\n",GlobalConfig.smtpHostPort)
 	//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
 	//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
 
