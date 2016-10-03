@@ -17,7 +17,7 @@ import (
 	"strconv"
 	"net/smtp"
 
-
+	"path/filepath"
 )
 
 type Config struct {
@@ -240,6 +240,12 @@ func main() {
 		fmt.Printf("EmailFrom: %s\n",config.EmailFrom)
 		fmt.Printf("EmailTo: %s\n",config.EmailTo)
 
+		dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(dir)
+
 	case command == "changeWeight":
 		var BackendServerNewWeight int
 		var BackendStateFlag string
@@ -442,5 +448,6 @@ func main() {
 			myfu.Replace(strForGrep,strForRepl,fileForGrep)
 
 	*/
+
 	}
 }
