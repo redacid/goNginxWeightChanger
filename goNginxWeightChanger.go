@@ -221,7 +221,7 @@ func main() {
 			fmt.Printf("Nginx config file: %s\n", FServer.NginxConfFile)
 			fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 		}
-		fmt.Printf("smtpHostPort: %s\n",config.GlobalConfigParams.smtpHostPort)
+		fmt.Printf("smtpHostPort: %s\n",config.GlobalConfigParams)
 	//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
 	//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
 
