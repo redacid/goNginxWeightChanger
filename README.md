@@ -17,6 +17,6 @@ goNginxWeightChanger -command changeWeight -writeWeightChanges yes
 ### Preview only
 
 ```
-    goNginxWeightChanger -command changeWeight -writeWeightChanges yes
+goNginxWeightChanger -command changeWeight -writeWeightChanges yes
 ``` 
 
