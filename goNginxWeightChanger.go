@@ -314,7 +314,7 @@ func main() {
 			if writeWeightChanges == "yes" {
 				fmt.Printf("%s", "- Reload Nginx daemon \n\n")
 				//nginxReloadCmd := "/etc/init.d/nginx reload"
-				fmt.Printf("%s\n", executeCmd(Global.NginxReloadCommand, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
+				fmt.Printf("%s\n", executeCmd(config.NginxReloadCommand, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 			} else {
 				fmt.Print("- Done.\n\n")
 			}
