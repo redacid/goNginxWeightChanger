@@ -163,8 +163,14 @@ func init() {
 func main() {
 	flag.Parse()
 
+	appdir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+
 	//Парсим файл конфигурации
-	file, _ := os.Open("./config.json")
+	file, _ := os.Open(appdir+"/config.json")
 	decoder := json.NewDecoder(file)
 	config := new(Config)
 	err := decoder.Decode(&config)
@@ -240,11 +246,7 @@ func main() {
 		fmt.Printf("EmailFrom: %s\n",config.EmailFrom)
 		fmt.Printf("EmailTo: %s\n",config.EmailTo)
 
-		dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(dir)
+
 
 	case command == "changeWeight":
 		var BackendServerNewWeight int
