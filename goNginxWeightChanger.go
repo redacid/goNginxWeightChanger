@@ -132,6 +132,7 @@ func init() {
 		"Commands:\n " +
 		"\t\t showConfig - Show configuration file \n" +
 		"\t\t changeWeight - Change weight on Nginx frontends \n" +
+		"\t\t snmpGetLoad - Get CPU load from backend servers via SNMP \n" +
 		"\t\t getSrvStats - Get usage stats from server ( need -SrvName <name> ) and send it to e-mail \n" +
 		"\t\t getStatsAll - Get usage stats from all servers and send it to e-mail \n" +
 		"\t\t execOnBackends(need -execCommand <cmd>) - Execute command on backends \n "+
@@ -293,7 +294,7 @@ func main() {
 			}
 
 		}
-	case command == "snmpGet":
+	case command == "snmpGetLoad":
 		for _, BServer := range config.BackendServers {
 
 			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,GetCpuLoad(BServer.Name))
