@@ -3,20 +3,17 @@ package main
 import (
 	"fmt"
 	"flag"
-	//"./myfu"
 	"github.com/alouca/gosnmp"
 	"os"
 	"encoding/json"
 	"log"
 	"bytes"
 	"golang.org/x/crypto/ssh"
-	//"./github.com/redacid/crypto/ssh"
 	"github.com/fatih/color"
 	"io/ioutil"
 	"strings"
 	"strconv"
 	"net/smtp"
-
 	"path/filepath"
 )
 
@@ -24,13 +21,11 @@ type Config struct {
 	BackendServers  []BackendServer
 	FrontendServers []FrontendServer
 	Global
-	//	ConfigGlobal ConfigGlobal
 }
 
 type BackendServer struct {
 	Name          string `json:"name"`
 	IP            string `json:"ip"`
-	//Port       string `json:"port"`
 	SSHPort       int `json:"sshPort"`
 	Priority      int `json:"priority"`
 	DefaultWeight int `json:"defaultWeight"`
@@ -53,12 +48,6 @@ type Global struct {
 	EmailFrom string `json:"emailFrom"`
 	EmailTo string `json:"emailTo"`
 }
-
-
-//type ConfigGlobal struct {
-//	RegExNginxServer string `json:"RegExNginxServer"`
-//	NginxServerString string `json:"NginxServerString"`
-//}
 
 const mib_percent_cpu_sys string = ".1.3.6.1.4.1.2021.11.9.0"
 const mib_percent_cpu_usr string = ".1.3.6.1.4.1.2021.11.10.0"
@@ -111,18 +100,10 @@ func GetCpuLoad(host string) int {
 }
 
 var command string
-//var strForGrep string
-//var strForRepl string
-//var fileForGrep string
 var writeWeightChanges string
 var execCommand string
 var srvName string
-//var floatForRound float64
 
-
-//var command = flag.String("command", "round", "Комманда(round...)")
-//var floatForRound = flag.Float64("floatForRound",1.5, "Округлить до целого")
-//var ip = flag.Int("flagname", 1234, "help message for flagname")
 
 func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 	conn, _ := ssh.Dial("tcp", hostname, config)
@@ -139,7 +120,7 @@ func executeCmd(cmd, hostname string, config *ssh.ClientConfig) string {
 }
 
 func init() {
-	//flag.StringVar(&command, "c", command, "Комманда(round,grep,replace,showconfig,changeweight ...)")
+
 	flag.StringVar(&command, "command", command, "" +
 		"Commands:\n " +
 		"\t\t showConfig - Show configuration file \n" +
@@ -154,10 +135,6 @@ func init() {
 	flag.StringVar(&execCommand, "execCommand", execCommand, "Exec command on servers(need by -command execOnFrontends or execOnBackends)\n")
 	flag.StringVar(&srvName, "srvName", srvName, "Server name, hostname:sshport (need by -command getSrvStats)\n")
 
-	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
-	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
-	//flag.StringVar (&strForRepl, "replace", strForRepl, "Строка для замены по grep фильтру")
-	//flag.StringVar (&fileForGrep, "grepfile", strForGrep, "Файл для grep фильтра")
 }
 
 func main() {
@@ -167,7 +144,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 
 	//Парсим файл конфигурации
 	file, _ := os.Open(appdir+"/config.json")
@@ -245,8 +221,6 @@ func main() {
 		fmt.Printf("StatsCommand: %s\n",config.StatsCommand)
 		fmt.Printf("EmailFrom: %s\n",config.EmailFrom)
 		fmt.Printf("EmailTo: %s\n",config.EmailTo)
-
-
 
 	case command == "changeWeight":
 		var BackendServerNewWeight int
@@ -436,20 +410,7 @@ func main() {
 			log.Fatal(err)
 		}
 		fmt.Printf("%s",messagebody)
-	/*
-		case command == "round":
-			fmt.Printf("%d", myfu.Round(floatForRound))
 
-		case command == "grep":
-			//fmt.Printf("%d", round(floatForRound))
-			// ./goNginxWeightChanger -c grep -grep="(server)(\s+)(back4)(\s+)(weight)(=)(\d+)(\s+)(max_fails)(=)(\d+)(\s+)(fail_timeout)(=)(5)(;)" -grepfile="nginx.conf"
-			myfu.Grep2(strForGrep, fileForGrep)
-
-		case command == "replace":
-			// ./goNginxWeightChanger -c replace -grep="(server)(\s+)(back4)(\s+)(weight)(=)(\d+)(\s+)(max_fails)(=)(\d+)(\s+)(fail_timeout)(=)(5)(;)" -replace "sdfsdfsdf" -grepfile="nginx.conf"
-			myfu.Replace(strForGrep,strForRepl,fileForGrep)
-
-	*/
 
 	}
 }
