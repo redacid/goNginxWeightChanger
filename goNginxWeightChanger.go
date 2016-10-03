@@ -50,6 +50,7 @@ type Global struct {
 	NginxReloadCommand string `json:"nginxReloadCommand"`
 }
 
+
 //type ConfigGlobal struct {
 //	RegExNginxServer string `json:"RegExNginxServer"`
 //	NginxServerString string `json:"NginxServerString"`
@@ -158,12 +159,7 @@ func init() {
 func main() {
 	flag.Parse()
 
-	f, err1 := os.OpenFile(Global.LogFile, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
-	if err1 != nil {
-		log.Fatalf("error opening log file: %v", err1)
-	}
-	defer f.Close()
-	log.SetOutput(f)
+
 
 	//Парсим файл конфигурации
 	file, _ := os.Open("./config.json")
@@ -172,6 +168,13 @@ func main() {
 	err := decoder.Decode(&config)
 
 	defer file.Close()
+
+	f, err1 := os.OpenFile(config.LogFile, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if err1 != nil {
+		log.Fatalf("error opening log file: %v", err1)
+	}
+	defer f.Close()
+	log.SetOutput(f)
 
 	if err != nil {
 		//fmt.Printf("%s\n","Ошибка чтения файла конфигурации")
@@ -224,8 +227,8 @@ func main() {
 			fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 		}
 		fmt.Printf("smtpHostPort: %s\n",config.Global.SmtpHostPort)
-		fmt.Printf("logFile: %s\n",config.Global.LogFile)
-		fmt.Printf("NginxReloadCommand: %s\n",config.Global.NginxReloadCommand)
+		fmt.Printf("logFile: %s\n",config.LogFile)
+		fmt.Printf("NginxReloadCommand: %s\n",config.NginxReloadCommand)
 
 
 
