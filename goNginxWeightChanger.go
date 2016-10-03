@@ -145,7 +145,7 @@ func init() {
 		"\t\t showConfig - Show configuration file \n" +
 		"\t\t changeWeight - Change weight on Nginx frontends \n" +
 		"\t\t snmpGetLoad - Get CPU load from backend servers via SNMP \n" +
-		"\t\t getSrvStats - Get usage stats from server ( need -SrvName <name> ) and send it to e-mail \n" +
+		"\t\t getSrvStats - Get usage stats from server ( need -srvName <name> ) and send it to e-mail \n" +
 		"\t\t getStatsAll - Get usage stats from all servers and send it to e-mail \n" +
 		"\t\t execOnBackends(need -execCommand <cmd>) - Execute command on backends \n "+
 		"\t\t execOnFrontends(need -execCommand <cmd>) - Execute command on frontends \n ")
@@ -406,8 +406,8 @@ func main() {
 
 	case command == "getSrvStats":
 		var messagebody string
-		execCmd := "top -b -n 1 | head -n 20 && iotop -b -n 1 -o"
-
+		//execCmd := "top -b -n 1 | head -n 20 && iotop -b -n 1 -o"
+		execCmd := config.StatsCommand
 		messagebody = messagebody +"\n================ "+ srvName + "\n" + executeCmd(execCmd, srvName, sshConfig)
 
 		// Connect to the remote SMTP server.
