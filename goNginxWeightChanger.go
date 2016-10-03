@@ -365,7 +365,6 @@ func main() {
 			messagebody = messagebody +"\n================ "+FServer.Name + "\n" + executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
 		}
 
-
 		for _, BServer := range config.BackendServers {
 			var host string
 			if strings.Contains(BServer.Name,":") {
