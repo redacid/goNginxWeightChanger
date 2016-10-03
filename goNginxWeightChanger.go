@@ -224,8 +224,9 @@ func main() {
 			fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 		}
 		fmt.Printf("smtpHostPort: %s\n",config.Global.SmtpHostPort)
-	//fmt.Printf("%s\n",config.ConfigGlobal.NginxServerString)
-	//fmt.Printf("%s\n",config.ConfigGlobal.RegExNginxServer)
+		fmt.Printf("logFile: %s\n",config.Global.LogFile)
+		fmt.Printf("NginxReloadCommand: %s\n",config.Global.NginxReloadCommand)
+
 
 
 	case command == "changeWeight":
