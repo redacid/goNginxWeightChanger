@@ -1,5 +1,7 @@
 # goNginxWeightChanger
 
----
-goNginxWeightChanger -h
----
+** help
+    goNginxWeightChanger -h
+
+** Show parsed configuration file
+    goNginxWeightChanger -command showConfig
