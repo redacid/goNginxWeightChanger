@@ -173,7 +173,7 @@ func main() {
 	file, _ := os.Open(appdir+"/config.json")
 	decoder := json.NewDecoder(file)
 	config := new(Config)
-	err := decoder.Decode(&config)
+	err = decoder.Decode(&config)
 
 	defer file.Close()
 
