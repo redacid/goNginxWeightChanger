@@ -48,6 +48,8 @@ type Global struct {
 	SmtpHostPort string `json:"smtpHostPort"`
 	LogFile string `json:"logFile"`
 	NginxReloadCommand string `json:"nginxReloadCommand"`
+	PercentDynamic int `json:"percentDynamic"`
+	StatsCommand string `json:"statsCommand"`
 }
 
 
@@ -273,7 +275,7 @@ func main() {
 					//fmt.Printf("--- Up Servers(%d): %d\n",BackendUpSeversSummaryLoad, BackendUpSeversCount)
 					AvgUpServersLoad := BackendUpSeversSummaryLoad/BackendUpSeversCount
 					fmt.Printf("--- Up Servers(AvgLoad: %d) count: %d\n",AvgUpServersLoad, BackendUpSeversCount)
-					if AvgUpServersLoad > 50 {
+					if AvgUpServersLoad > config.PercentDynamic {
 						BackendStateFlag = "up"
 
 					} else {
@@ -349,7 +351,8 @@ func main() {
 		}
 	case command == "getStatsAll":
 		var messagebody string
-		execCmd := "top -b -n 1 | head -n 20 && iotop -b -n 1 -o"
+		//execCmd := "top -b -n 1 | head -n 20 && iotop -b -n 1 -o"
+		execCmd := config.StatsCommand
 
 		for _, FServer := range config.FrontendServers {
 			messagebody = messagebody +"\n================ "+FServer.Name + "\n" + executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)

@@ -50,5 +50,7 @@
   ],
   "smtpHostPort": "localhost:25",
   "logFile": "/var/log/nginxweight.log",
-  "nginxReloadCommand": "/etc/init/d/nginx reload"
+  "nginxReloadCommand": "/etc/init/d/nginx reload",
+  "percentDynamic": "50",
+  "statsCommand": "top -b -n 1 | head -n 20 && iotop -b -n 1 -o"
 }
