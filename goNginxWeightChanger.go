@@ -151,11 +151,24 @@ func init() {
 func main() {
 	flag.Parse()
 
+	f, err := os.OpenFile("/var/log/nginxweight.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("error opening log file: %v", err)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+
+
+
 	//Парсим файл конфигурации
 	file, _ := os.Open("./config.json")
 	decoder := json.NewDecoder(file)
 	config := new(Config)
 	err := decoder.Decode(&config)
+
+	defer file.Close()
+
 	if err != nil {
 		//fmt.Printf("%s\n","Ошибка чтения файла конфигурации")
 		log.Fatalf("Error read configuration file %v\n", err)
@@ -259,6 +272,7 @@ func main() {
 						BackendStateFlag = "backup"
 					}
 					color.Cyan("New Dynamic state is "+BackendStateFlag)
+					log.Println("New Dynamic state is "+BackendStateFlag)
 
 				} else {
 					BackendStateFlag = ""
@@ -282,6 +296,7 @@ func main() {
 					os.Exit(1)
 				}
 				color.Cyan("New Weight is "+strconv.Itoa(BackendServerNewWeight))
+				log.Println("New Weight is "+strconv.Itoa(BackendServerNewWeight))
 				fmt.Printf("%s\n", executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 				//fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			}
