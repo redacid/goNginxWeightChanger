@@ -163,8 +163,6 @@ func init() {
 func main() {
 	flag.Parse()
 
-
-
 	//Парсим файл конфигурации
 	file, _ := os.Open("./config.json")
 	decoder := json.NewDecoder(file)
@@ -252,7 +250,6 @@ func main() {
 			//color.Red("----------------------------------------------------")
 			for _, BServer := range config.BackendServers {
 				var sshcmd string
-
 
 				//fmt.Printf("%s-%s:%d\n",BServer.Name,BServer.IP,BServer.SSHPort)
 				fmt.Printf("%s(%s) %s cpu_load:%d\n", BServer.Name, BServer.IP, BServer.State, GetCpuLoad(BServer.Name))
