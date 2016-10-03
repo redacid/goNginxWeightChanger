@@ -48,5 +48,7 @@
       "NginxConfFile": "/etc/nginx/conf.d/upstream-web.conf"
     }
   ],
-     "smtpHostPort": "localhost:25"
+  "smtpHostPort": "localhost:25",
+  "logFile": "/var/log/nginxweight.log",
+  "nginxReloadCommand": "/etc/init/d/nginx reload"
 }

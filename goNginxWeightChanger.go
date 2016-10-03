@@ -46,6 +46,8 @@ type FrontendServer struct {
 
 type Global struct {
 	SmtpHostPort string `json:"smtpHostPort"`
+	LogFile string `json:"logFile"`
+	NginxReloadCommand string `json:"nginxReloadCommand"`
 }
 
 //type ConfigGlobal struct {
@@ -156,7 +158,7 @@ func init() {
 func main() {
 	flag.Parse()
 
-	f, err1 := os.OpenFile("/var/log/nginxweight.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	f, err1 := os.OpenFile(Global.LogFile, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if err1 != nil {
 		log.Fatalf("error opening log file: %v", err1)
 	}
@@ -307,8 +309,8 @@ func main() {
 			}
 			if writeWeightChanges == "yes" {
 				fmt.Printf("%s", "- Reload Nginx daemon \n\n")
-				nginxReloadCmd := "/etc/init.d/nginx reload"
-				fmt.Printf("%s\n", executeCmd(nginxReloadCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
+				//nginxReloadCmd := "/etc/init.d/nginx reload"
+				fmt.Printf("%s\n", executeCmd(Global.NginxReloadCommand, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 			} else {
 				fmt.Print("- Done.\n\n")
 			}
