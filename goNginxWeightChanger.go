@@ -139,7 +139,7 @@ func init() {
 
 	flag.StringVar(&writeWeightChanges, "writeWeightChanges", writeWeightChanges, "(yes\\no) Write weight changes ( need by -command changeWeight) or only present changes\n")
 	flag.StringVar(&execCommand, "execCommand", execCommand, "Exec command on servers(need by -command execOnFrontends or execOnBackends)\n")
-	flag.StringVar(&srvName, "srvName", srvName, "Server name, hostname[:sshport] (need by -command getSrvStats)\n")
+	flag.StringVar(&srvName, "srvName", srvName, "Server name, hostname:sshport (need by -command getSrvStats)\n")
 
 	//flag.Float64Var (&floatForRound, "round", floatForRound, "Число для округления до целого")
 	//flag.StringVar (&strForGrep, "grep", strForGrep, "Строка(regex) для grep фильтра")
