@@ -231,6 +231,8 @@ func main() {
 		fmt.Printf("smtpHostPort: %s\n",config.SmtpHostPort)
 		fmt.Printf("logFile: %s\n",config.LogFile)
 		fmt.Printf("NginxReloadCommand: %s\n",config.NginxReloadCommand)
+		fmt.Printf("PercentDynamic: %d\n",config.PercentDynamic)
+		fmt.Printf("StatsCommand: %s\n",config.StatsCommand)
 
 	case command == "changeWeight":
 		var BackendServerNewWeight int
