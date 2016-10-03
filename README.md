@@ -1,1 +1,5 @@
 # goNginxWeightChanger
+
+---
+goNginxWeightChanger -h
+---
