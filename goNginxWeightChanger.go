@@ -173,25 +173,28 @@ func main() {
 
 	f, err1 := os.OpenFile(config.LogFile, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if err1 != nil {
+		fmt.Printf("error opening log file: %v", err1)
 		log.Fatalf("error opening log file: %v", err1)
 	}
 	defer f.Close()
 	log.SetOutput(f)
 
 	if err != nil {
-		//fmt.Printf("%s\n","Ошибка чтения файла конфигурации")
+		fmt.Printf("Error read configuration file %v\n", err)
 		log.Fatalf("Error read configuration file %v\n", err)
 
 	}
 	//Настройки SSH
 	pkey, err := ioutil.ReadFile(os.Getenv("HOME") + "/.ssh/id_rsa")
 	if err != nil {
+		fmt.Printf("Can't open private key: %v", err)
 		log.Fatalf("Can't open private key: %v", err)
 	}
 
 	// Create the Signer for this private key.
 	signer, err := ssh.ParsePrivateKey(pkey)
 	if err != nil {
+		fmt.Printf("Can't parse private key: %v", err)
 		log.Fatalf("Can't parse private key: %v", err)
 	}
 
@@ -208,6 +211,7 @@ func main() {
 	default:
 		//log.Fatal("Invalid or undefined command, type -h to help \n")
 		fmt.Printf("%s", "Invalid or undefined command, type -h to help \n")
+		log.Fatalf("%s", "Invalid or undefined command, type -h to help \n")
 
 	case command == "showConfig":
 		color.Red("Backend Servers")
@@ -375,7 +379,7 @@ func main() {
 		}
 
 		// Connect to the remote SMTP server.
-		c, err := smtp.Dial("localhost:25")
+		c, err := smtp.Dial(config.SmtpHostPort)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -403,9 +407,10 @@ func main() {
 		messagebody = messagebody +"\n================ "+ srvName + "\n" + executeCmd(execCmd, srvName, sshConfig)
 
 		// Connect to the remote SMTP server.
-		c, err := smtp.Dial("localhost:25")
+		c, err := smtp.Dial(config.SmtpHostPort)
 		if err != nil {
 			log.Fatal(err)
+			fmt.Print(err)
 		}
 		defer c.Close()
 		// Set the sender and recipient.
