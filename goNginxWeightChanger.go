@@ -230,8 +230,6 @@ func main() {
 		fmt.Printf("logFile: %s\n",config.LogFile)
 		fmt.Printf("NginxReloadCommand: %s\n",config.NginxReloadCommand)
 
-
-
 	case command == "changeWeight":
 		var BackendServerNewWeight int
 		var BackendStateFlag string
