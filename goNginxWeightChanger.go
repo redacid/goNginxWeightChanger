@@ -345,7 +345,7 @@ func main() {
 		for _, FServer := range config.FrontendServers {
 			execCmd := execCommand
 			//fmt.Printf("%s# %s\n",FServer.Name, executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
-			go executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
+			executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
 		}
 
 	case command == "execOnBackends":
