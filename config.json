@@ -7,7 +7,7 @@
       "priority": 1,
       "defaultWeight": 50,
       "lastWeight": 60,
-      "state":"dynamic"
+      "state":"up"
     },
     {
       "name": "tback2:81",
@@ -16,7 +16,7 @@
       "priority": 2,
       "defaultWeight": 40,
       "lastWeight": 50,
-      "state":"down"
+      "state":"up"
     },
     {
       "name": "tback3:81",
