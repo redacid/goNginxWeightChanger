@@ -16,6 +16,7 @@ import (
 	"net/smtp"
 	"path/filepath"
 
+	"time"
 )
 
 type Config struct {
@@ -344,14 +345,14 @@ func main() {
 		}
 	case command == "execOnFrontends":
 		execCmd := execCommand
-		for _, FServer := range config.FrontendServers {
 
-
+		//Single Thread
+		/*for _, FServer := range config.FrontendServers {
 			fmt.Printf("%s# %s\n",FServer.Name, executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
+		}*/
 
-		}
-
-		/*timeout := time.After(5 * time.Second)
+		//Multi Thread
+		timeout := time.After(5 * time.Second)
 		results := make(chan string)
 
 		for _, FServer := range config.FrontendServers {
@@ -369,8 +370,8 @@ func main() {
 				return
 			}
 		}
-		defer close(results)*/
-
+		defer close(results)
+		//end multi thread
 
 
 	case command == "execOnBackends":
