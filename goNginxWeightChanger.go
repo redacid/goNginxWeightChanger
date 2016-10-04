@@ -354,11 +354,11 @@ func main() {
 			go func() {
 				results <- executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
 			}()
-
+			res := <-results
+			fmt.Print(res)
 
 		}
-		res := <-results
-		fmt.Print(res)
+
 
 	case command == "execOnBackends":
 		for _, BServer := range config.BackendServers {
