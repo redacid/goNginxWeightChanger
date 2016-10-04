@@ -354,10 +354,10 @@ func main() {
 		timeout := time.After(5 * time.Second)
 		results := make(chan string)
 
-		for _, hostname := range config.FrontendServers {
-			go func(hostname string) {
-				results <- executeCmd(execCmd, hostname, sshConfig)
-			}(hostname)
+		for _, FServer := range config.FrontendServers {
+			go func(FServer FrontendServer) {
+				results <- executeCmd(execCmd, FServer.Name+ ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
+			}(FServer)
 		}
 
 		for i := 0; i < len(config.FrontendServers); i++ {
