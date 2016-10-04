@@ -142,7 +142,7 @@ func init() {
 		"\t\t showConfig - Show configuration file \n" +
 		"\t\t changeWeight - Change weight on Nginx frontends ( need -writeWeightChanges <yes\\no> )\n" +
 		"\t\t snmpGetLoad - Get CPU load from backend servers via SNMP \n" +
-		"\t\t getSrvStats - Get usage stats from server ( need -srvName <name> ) and send it to e-mail \n" +
+		"\t\t getSrvStats - Get usage stats from server ( need -srvName <host:port> ) and send it to e-mail \n" +
 		"\t\t getStatsAll - Get usage stats from all servers and send it to e-mail \n" +
 		"\t\t execOnBackends(need -execCommand <cmd>) - Execute command on backends \n "+
 		"\t\t execOnFrontends(need -execCommand <cmd>) - Execute command on frontends \n ")
@@ -345,6 +345,7 @@ func main() {
 		for _, FServer := range config.FrontendServers {
 			execCmd := execCommand
 			fmt.Printf("%s# %s\n",FServer.Name, executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
+			go executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
 		}
 
 	case command == "execOnBackends":
