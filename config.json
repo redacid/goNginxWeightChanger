@@ -39,7 +39,7 @@
       "name": "test2",
       "ip": "192.168.4.21",
       "sshPort": 22,
-      "NginxConfFile": "/etc/nginx/conf.d/upstream-web.conf"
+      "NginxConfFile": "/usr/local/nginx/conf/conf.d/upstream-web.conf"
     },
     {
       "name": "test3",
