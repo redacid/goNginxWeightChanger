@@ -357,7 +357,7 @@ func main() {
 
 		for _, hostname := range config.FrontendServers {
 			go func(hostname string) {
-				results <- executeCmd(execCmd, hostname, config)
+				results <- executeCmd(execCmd, hostname, sshConfig)
 			}(hostname)
 		}
 
