@@ -358,6 +358,7 @@ func main() {
 			fmt.Print(res)
 
 		}
+		defer close(results)
 
 
 	case command == "execOnBackends":
