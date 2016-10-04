@@ -342,23 +342,23 @@ func main() {
 			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,GetCpuLoad(BServer.Name))
 		}
 	case command == "execOnFrontends":
-		results := make(chan string)
+		//results := make(chan string)
 		for _, FServer := range config.FrontendServers {
 
 			execCmd := execCommand
-			//fmt.Printf("%s# %s\n",FServer.Name, executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
+			fmt.Printf("%s# %s\n",FServer.Name, executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 
 
 
 
-			go func() {
+			/*go func() {
 				results <- executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
 			}()
 			res := <-results
-			fmt.Print(res)
+			fmt.Print(res)*/
 
 		}
-		defer close(results)
+		//defer close(results)
 
 
 	case command == "execOnBackends":
