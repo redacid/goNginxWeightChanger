@@ -15,6 +15,7 @@ import (
 	"strconv"
 	"net/smtp"
 	"path/filepath"
+	"time"
 )
 
 type Config struct {
@@ -342,23 +343,34 @@ func main() {
 			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,GetCpuLoad(BServer.Name))
 		}
 	case command == "execOnFrontends":
-		//results := make(chan string)
-		for _, FServer := range config.FrontendServers {
+
+		/*for _, FServer := range config.FrontendServers {
 
 			execCmd := execCommand
 			fmt.Printf("%s# %s\n",FServer.Name, executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 
+		}*/
 
+		timeout := time.After(5 * time.Second)
+		results := make(chan string)
+		execCmd := execCommand
 
-
-			/*go func() {
-				results <- executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig)
-			}()
-			res := <-results
-			fmt.Print(res)*/
-
+		for _, hostname := range config.FrontendServers {
+			go func(hostname string) {
+				results <- executeCmd(execCmd, hostname, config)
+			}(hostname)
 		}
-		//defer close(results)
+
+		for i := 0; i < len(config.FrontendServers); i++ {
+			select {
+			case res := <-results:
+				fmt.Print(res)
+			case <-timeout:
+				fmt.Println("Timed out!")
+				return
+			}
+		}
+
 
 
 	case command == "execOnBackends":
