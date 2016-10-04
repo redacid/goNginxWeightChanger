@@ -345,7 +345,7 @@ func main() {
 		results := make(chan string)
 		for _, FServer := range config.FrontendServers {
 
-			execCmd := &execCommand
+			execCmd := execCommand
 			//fmt.Printf("%s# %s\n",FServer.Name, executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 
 
@@ -363,7 +363,7 @@ func main() {
 	case command == "execOnBackends":
 		for _, BServer := range config.BackendServers {
 			var host string
-			execCmd := &execCommand
+			execCmd := execCommand
 
 			if strings.Contains(BServer.Name,":") {
 				LastDots := strings.LastIndex(BServer.Name, ":")
