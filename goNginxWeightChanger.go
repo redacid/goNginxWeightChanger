@@ -343,17 +343,16 @@ func main() {
 			fmt.Printf("%s(%s) cpu_load:%d\n",BServer.Name,BServer.IP,GetCpuLoad(BServer.Name))
 		}
 	case command == "execOnFrontends":
-
+		execCmd := execCommand
 		/*for _, FServer := range config.FrontendServers {
 
-			execCmd := execCommand
+
 			fmt.Printf("%s# %s\n",FServer.Name, executeCmd(execCmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 
 		}*/
 
 		timeout := time.After(5 * time.Second)
 		results := make(chan string)
-		execCmd := execCommand
 
 		for _, hostname := range config.FrontendServers {
 			go func(hostname string) {
