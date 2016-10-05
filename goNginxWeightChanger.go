@@ -325,7 +325,7 @@ func main() {
 					os.Exit(1)
 				}
 				color.Cyan("New Weight is "+strconv.Itoa(BackendServerNewWeight))
-				log.Println(FServer.Name+"-"+BServer.Name+" New Weight is "+strconv.Itoa(BackendServerNewWeight))
+				log.Println("fr:"+FServer.Name+" be:"+BServer.Name+"("+BServer.State+") New Weight is "+strconv.Itoa(BackendServerNewWeight))
 				fmt.Printf("%s\n", executeCmd(sshcmd, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 				//fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			}
