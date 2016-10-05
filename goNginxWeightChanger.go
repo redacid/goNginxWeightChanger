@@ -330,7 +330,7 @@ func main() {
 				//fmt.Printf("%s", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 			}
 			if writeWeightChanges == "yes" {
-				fmt.Printf("%s", "- Reload Nginx daemon \n\n")
+				fmt.Printf("%s", FServer.Name+" - Reload Nginx daemon \n\n")
 				//nginxReloadCmd := "/etc/init.d/nginx reload"
 				fmt.Printf("%s\n", executeCmd(config.NginxReloadCommand, FServer.Name + ":" + strconv.Itoa(FServer.SSHPort), sshConfig))
 			} else {
