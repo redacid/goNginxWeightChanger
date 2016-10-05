@@ -371,7 +371,7 @@ func main() {
 			}
 		}
 		defer close(results)
-		//end multi thread
+		//end multi thread.
 
 
 	case command == "execOnBackends":
