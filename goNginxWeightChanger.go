@@ -15,7 +15,6 @@ import (
 	"strconv"
 	"net/smtp"
 	"path/filepath"
-
 	"time"
 )
 
