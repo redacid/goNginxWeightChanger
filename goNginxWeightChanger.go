@@ -245,6 +245,7 @@ func main() {
 	case command == "changeWeight":
 		var BackendServerNewWeight int
 		var BackendStateFlag string
+		var BackendStateForLog string
 
 		color.Green("Frontend Servers")
 		for _, FServer := range config.FrontendServers {
@@ -292,13 +293,14 @@ func main() {
 					if AvgUpServersLoad > config.PercentDynamic {
 						//state UP
 						BackendStateFlag = ""
-
+						BackendStateForLog ="up"
 
 					} else {
 						BackendStateFlag = "backup"
+						BackendStateForLog ="backup"
 					}
-					color.Cyan("New Dynamic state is "+BackendStateFlag)
-					log.Println(FServer.Name+"-"+BServer.Name+" New Dynamic state is "+BackendStateFlag)
+					color.Cyan("New Dynamic state is "+BackendStateForLog)
+					log.Println(FServer.Name+"-"+BServer.Name+" New Dynamic state is "+BackendStateForLog)
 
 				} else {
 					//state UP
